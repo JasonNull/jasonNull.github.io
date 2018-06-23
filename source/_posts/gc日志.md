@@ -6,6 +6,10 @@ tags:
 - gc 
 - cms 
 - g1
+categories: 
+- java
+- jvm
+toc: true
 ---
 ## cms参数
 -XX:+CMSClassUnloadingEnabled -XX:CMSInitiatingOccupancyFraction=80 -XX:CMSMaxAbortablePrecleanTime=5000 -XX:+ExplicitGCInvokesConcurrent -XX:InitialHeapSize=8589934592 -XX:MaxDirectMemorySize=4294967296 -XX:MaxHeapSize=8589934592 -XX:MaxNewSize=6442450944 -XX:NewSize=6442450944 -XX:OldPLABSize=16 -XX:ParallelGCThreads=4 -XX:+PrintGC -XX:+PrintGCDateStamps -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:SurvivorRatio=4 -XX:+UseCMSCompactAtFullCollection -XX:+UseCMSInitiatingOccupancyOnly -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:+UseConcMarkSweepGC -XX:+UseParNewGC
