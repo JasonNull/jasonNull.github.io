@@ -3,12 +3,12 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: 陈斌的个人空间
+title: 陈斌的博客
 subtitle: 技术宅的站点
 description: 分享技术所见所闻所感
 keywords: 后端,java,架构
 author: 陈斌
-language: chinese
+language: zh-CN
 timezone: Asia/Shanghai
 email: jason-null@foxmail.com
 
@@ -82,8 +82,6 @@ deploy:
   type: git
   repo: git@github.com:jasonnull/jasonnull.github.io.git
   branch: master
-  # name: BaronJChen
-  # email: jason-null@foxmail.com
 
 jsonContent:
     meta: false

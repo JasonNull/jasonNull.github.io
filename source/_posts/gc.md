@@ -9,19 +9,21 @@ tags:
 ---
 
 ## GC分类
-- partial gc
+### partial gc
 1. minor gc，回收年轻代
 2. major gc，回收老年代
 3. mixed gc，回收年轻代和一部分老年代，只有G1有
-- full gc
+
+### full gc
 回收整个java堆的gc
 
-> 一般来说，Full GC == Major GC，因为发生major gc的时候一般都会先minor gc，但又不完全等价
-> major gc的触发的原因（除cms）：
-> 1. 由于young gc前的预估发现老年代存放不下新生代晋升的对象（PromotionFailure）
-> 2. 创建大对象的时候，没有连续的内存存储，老年代不足以存放
-> 3. 显示的调用了System.GC，并且配合上了jvm参数
-> Full GC需要回收年轻代和老年代，major gc不会
+### full gc的触发的原因：
+1. 由于young gc前的预估发现老年代存放不下新生代晋升的对象（PromotionFailure）
+2. 创建大对象的时候，没有连续的内存存储，老年代不足以存放
+3. 显示的调用了System.GC，并且配合上了jvm参数
+
+**一般来说，Full GC == Major GC，因为发生major gc的时候一般都会先minor gc，但又不完全等价，Full GC需要回收年轻代和老年代，major gc不会**
+<!-- more -->
 
 ## safe point
 GC的时候，所有线程都需要进入safe point才可以进行gc，而safe point是由jit加入的
@@ -36,11 +38,12 @@ GC的时候，所有线程都需要进入safe point才可以进行gc，而safe
 引用计数|给每个对象加上一个属性，值为其他对象指向当前对象的次数。<br/>如果该属性值为0，就代表对象需要被回收。 |实现简单，性能高| 对象直接循环引用，会造成内存泄漏。
 可达性分析|从一组GC根对象出发，对堆内所有对象进行遍历，标记那些可以被到达的对象|准确度比较高，不会误判|耗时比较长，并且分析的过程中需要暂停程序的运行
 
-> gc根对象包含以下：
-> java方法栈内的对象
-> 本地方法栈内的对象
-> 方法区内类静态属性引用的对象
-> 方法区内常量池引用的对象
+## 根对象
+gc根对象包含以下：
+1. java方法栈内的对象
+2. 本地方法栈内的对象
+3. 方法区内类静态属性引用的对象
+4. 方法区内常量池引用的对象
 
 ## 回收算法
 名称|定义|优点|缺点  
@@ -58,10 +61,12 @@ Serial/Serial Old|暂停所有用户线程，开始标记新生代和老年�
 ParNew|Serial收集器的多线程版本|-XX:+UseParNewGC，-XX:ParallelGCThreads|**新生代**收集器，标记复制|CMS的默认新生代收集器，多线程，效率较高|无
 Parallel Scavenge|stw，并行，吞吐量优先|-XX:+UseParallelGC，-XX:MaxGCPauseMillis，-XX:GCTimeRatio，-XX:+UseAdptiveSizePolicy|**新生代**并行收集器，标记复制|多线程，吞吐量优先|回收不一定保证能完全回收
 Parallel Old|同上|-XX:+UseParallelOldGC|老年代并行收集器，**标记整理**|同上|占用内存比较多
-> 所有的新生代收集器，标记整理
-> SerialOld，ParallelOld，标记整理算法（只有这俩能够进行full gc）
-> cms，标记删除
-> g1，整体的标记复制
+
+tip: 
+1. 所有的新生代收集器，标记整理
+2. SerialOld，ParallelOld，标记整理算法（只有这俩能够进行full gc）
+3. cms，标记删除
+4. g1，整体的标记复制
 
 ### CMS
 concurrent mark sweep
@@ -81,11 +86,11 @@ concurrent mark sweep
 #### 触发条件
 老年代使用率大于CMSInitiatingOccupancyFraction
 #### Concurrent Mode Failure
-由于整个时间操作都是比较长的，并且在CMS运行过程中,，预留空间不能够满足使用（大小不够或者连续容量不够）
-此时在并发阶段出现ConcurrentModeFailure的情况，CMS会启用**Serial Old**作为backup，配合ParNew去执行FullGC
-> cms会在老年代占用比例超过CMSInitiatingOccupancyFraction的时候进行回收老年代，发生major gc
-> major gc的重新标记步骤，**可能会触发一次新生代gc**（根据参数,CMSMaxAbortablePrecleanTime），触发了并且这次新生代gc成功，就会进行重新标记
-> 触发了，但是执行不成功，会转为由Serial Old来进行老年代的回收（完全的stw）
+- 由于整个时间操作都是比较长的，并且在CMS运行过程中,，预留空间不能够满足使用（大小不够或者连续容量不够）
+- 此时在并发阶段出现ConcurrentModeFailure的情况，CMS会启用**Serial Old**作为backup，配合ParNew去执行FullGC
+- cms会在老年代占用比例超过CMSInitiatingOccupancyFraction的时候进行回收老年代，发生major gc
+- major gc的重新标记步骤，**可能会触发一次新生代gc**（根据参数,CMSMaxAbortablePrecleanTime），触发了并且这次新生代gc成功，就会进行重新标记
+- 触发了，但是执行不成功，会转为由Serial Old来进行老年代的回收（完全的stw）
 #### 优点
 CMS的优点是，在老年代是使用到一定的比例就会开始进行老年代的回收，并且回收发生的绝大部分时间之内程序都是可以运行的。
 
@@ -124,12 +129,15 @@ G1的young gc，mixed gc都会stw。
 3. 再次标记
 4. 清除垃圾
 5. 拷贝
-> RS中保存了`新生代的哪些对象被老年代引用了`
-> 在新生代扫描的过程当中，根扫描是一个比较耗时的工作，引入了remember set，用来记录哪些对象被老年代引用了。
-> 主要还是为了避免扫描整个堆（老年代扫描比较慢）
+
+**tip**
+- RS中保存了`新生代的哪些对象被老年代引用了`
+- 在新生代扫描的过程当中，根扫描是一个比较耗时的工作，引入了remember set，用来记录哪些对象被老年代引用了
+- 主要还是为了避免扫描整个堆（老年代扫描比较慢）
+
 #### 参数
 -XX:UseG1GC,-XX:+UseG1GC,-XX:MaxGCPauseMillis=400,-XX:InitiatingHeapOccupancyPercent=40
 -XX:SurvivorRatio=1,-XX:MaxTenuringThreshold=15,-XX:G1ReservePercent=15
 -XX:+UnlockExperimentalVMOptions,-XX:G1NewSizePercent=40,-XX:G1MaxNewSizePercent=80
 
-> Parallel收集器和G1收集器不是在传统的hotspot垃圾收集器框架里面开发的，所以不能配合和其他收集器使用。
+Parallel收集器和G1收集器不是在传统的hotspot垃圾收集器框架里面开发的，所以不能配合和其他收集器使用。

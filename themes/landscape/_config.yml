@@ -1,11 +1,11 @@
 # Header
 menu:
-  Home: /archives
+  Home: /
   Archives: /archives
 rss: /atom.xml
 
 # Content
-excerpt_link: Read More
+excerpt_link: more
 fancybox: true
 
 # Sidebar
@@ -30,7 +30,7 @@ show_count: false
 # Miscellaneous
 google_analytics:
 gauges_analytics:
-favicon: /favicon.png
+favicon: /css/images/favicon.png
 twitter:
 google_plus:
 fb_admins:
