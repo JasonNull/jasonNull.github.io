@@ -1,6 +1,6 @@
 ---
 title: AQS分析
-date: 2018-06-23 18:24:52
+date: 2018-06-24 20:24:52
 tags:
 - java
 - 并发
@@ -12,6 +12,9 @@ toc: true
 ---
 
 # CLH队列
+## 原理
+<img src="/images/CLH.jpg" height="80%" width="60%">
+<!-- more -->
 ## 示例
 ```java
 public class CLHLock {
@@ -87,9 +90,6 @@ public class CLHLock {
     }
 }
 ```
-<!-- more -->
-## 原理
-![加锁解锁示意图](/images/CLH.jpg)
 
 # AQS
 ## 原理
