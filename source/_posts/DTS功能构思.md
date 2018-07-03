@@ -43,6 +43,6 @@ categories:
     - requireRecovery
     - misfireFireAndProceeding
 2. BASE
-    - 任务状态，未调度，调度成功，调度失败，执行中，等待中，完成
+    - 任务状态(未调度，调度成功，调度失败，执行中，等待中，完成)
     - 状态上报
     - 状态监测

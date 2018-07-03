@@ -831,7 +831,7 @@ public void reset() {
 内部原理是state状态变量的低16位代表写锁数量，高16位代表读锁数量。
 `ReadLock.lock()`调用`tryAcquireShared`
 `WriteLock.lock()`调用`tryAcquire`
-#### 写锁降级
+## 写锁降级
 原理是先获取读锁（直接获取会成功），释放写锁（同时虽然会唤醒头等待线程，但是没有用，获取不到）
-#### 读锁升级
+## 读锁升级
 直接加写锁呗
