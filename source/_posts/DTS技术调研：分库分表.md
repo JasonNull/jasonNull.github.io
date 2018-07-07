@@ -2,10 +2,11 @@
 title: DTS技术调研：分库分表
 date: 2018-07-02 08:19:54
 tags:
+- 中间件
 - 框架
 - sharding-jdbc
 categories:
-- 框架
+- 中间件
 toc: true
 ---
 ## 介绍
