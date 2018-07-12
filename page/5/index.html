@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>陈斌的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="分享技术所见所闻所感">
+<meta name="keywords" content="后端,java,架构">
+<meta property="og:type" content="website">
+<meta property="og:title" content="陈斌的博客">
+<meta property="og:url" content="http://yoursite.com/page/5/index.html">
+<meta property="og:site_name" content="陈斌的博客">
+<meta property="og:description" content="分享技术所见所闻所感">
+<meta property="og:locale" content="zh-CN">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="陈斌的博客">
+<meta name="twitter:description" content="分享技术所见所闻所感">
+  
+    <link rel="alternate" href="/atom.xml" title="陈斌的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/css/images/favicon.png" type="image/x-icon">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">陈斌的博客</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">技术宅的站点</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+  <!-- <base target="_blank" /> -->
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-重排序" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/06/23/重排序/" class="article-date">
+  <time datetime="2018-06-23T08:09:49.000Z" itemprop="datePublished">2018-06-23</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/java/">java</a>►<a class="article-category-link" href="/categories/java/jvm/">jvm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/06/23/重排序/">重排序</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><ol>
+<li>编译器重排序</li>
+<li>处理器重排序</li>
+<li>内存重排序</li>
+</ol>
+<h2 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h2><p>重排序存在的目的是为了更好的执行性能优化<br>
+        
+          <p class="article-more-link">
+            <a href="/2018/06/23/重排序/#more" target="_blank">more</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/06/23/重排序/" data-id="cjji8to4o0048lbv8cgnhwh0n" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jvm/">jvm</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-类加载" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/06/23/类加载/" class="article-date">
+  <time datetime="2018-06-23T08:07:40.000Z" itemprop="datePublished">2018-06-23</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/java/">java</a>►<a class="article-category-link" href="/categories/java/jvm/">jvm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/06/23/类加载/">类加载</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h4><ol>
+<li>加载<ul>
+<li>通过类名寻找到class文件 </li>
+<li>构建class对象</li>
+<li>将class文件变为运行时数据结构</li>
+</ul>
+</li>
+<li>验证<ul>
+<li>文件格式验证，文件格式是不是符合当前虚拟机规范</li>
+<li>元数据验证，语义分析 </li>
+<li>字节码验证，字节码是否符合规范，是否会对虚拟机造成危害</li>
+<li>符号引用验证，</li>
+</ul>
+</li>
+<li>准备<ul>
+<li>为变量分配内存，并且赋默认值（0，null，false）</li>
+</ul>
+</li>
+<li>解析<ul>
+<li>类和接口的解析，这边可能涉及到其他类的加载</li>
+<li>字段解析（静态，非静态）</li>
+<li>方法解析</li>
+</ul>
+</li>
+<li>初始化<ul>
+<li>执行静态变量的初始赋值，和类内静态代码块</li>
+</ul>
+</li>
+<li>使用</li>
+<li>卸载</li>
+</ol>
+        
+          <p class="article-more-link">
+            <a href="/2018/06/23/类加载/#more" target="_blank">more</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/06/23/类加载/" data-id="cjji8to4f003mlbv8tskadta2" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jvm/">jvm</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-代码优化" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/06/23/代码优化/" class="article-date">
+  <time datetime="2018-06-23T08:03:02.000Z" itemprop="datePublished">2018-06-23</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/java/">java</a>►<a class="article-category-link" href="/categories/java/jvm/">jvm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/06/23/代码优化/">代码优化.md</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>java代码执行过程中，主要分为以下三块优化：</p>
+<ol>
+<li>javac优化(词法分析，分词；语法分析，用法是否正确；语义分析，代码到底是什么含义)<br><img src="/images/javac流程.gif" alt="">
+        
+          <p class="article-more-link">
+            <a href="/2018/06/23/代码优化/#more" target="_blank">more</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/06/23/代码优化/" data-id="cjji8to3x002olbv8zo5289iu" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jit/">jit</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jvm/">jvm</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-synchronized" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/06/23/synchronized/" class="article-date">
+  <time datetime="2018-06-23T07:59:24.000Z" itemprop="datePublished">2018-06-23</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/java/">java</a>►<a class="article-category-link" href="/categories/java/jvm/">jvm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/06/23/synchronized/">synchronized</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><ol>
+<li>每个对象其实并不是一把监视器锁，这是一个概念上的误区，只不过是用起来像监视器锁</li>
+<li>主要是monitorEnter，monitorExit实现的</li>
+<li>monitorEnter是查看自己能否获取当前对象，根据对象MarkWord来的，如果不能获取，则把自己加入到monitor record链表中，并且park当前线程</li>
+<li>monitorExit和AQS类似，释放对象头当中的标记位置，然后唤醒monitor record中的第一个线程</li>
+<li>monitorExit不会插入内存屏障</li>
+</ol>
+<h1 id="详解"><a href="#详解" class="headerlink" title="详解"></a>详解</h1><p>对象头里面包好MarkWord，如下图：<br><img src="/images/MarkWord.png" alt="MarkWord"></p>
+        
+          <p class="article-more-link">
+            <a href="/2018/06/23/synchronized/#more" target="_blank">more</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/06/23/synchronized/" data-id="cjji8to3w002mlbv8swpv1k11" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jvm/">jvm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/关键字/">关键字</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-jmm" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/06/23/jmm/" class="article-date">
+  <time datetime="2018-06-23T07:56:13.000Z" itemprop="datePublished">2018-06-23</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/java/">java</a>►<a class="article-category-link" href="/categories/java/jvm/">jvm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/06/23/jmm/">jmm</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="内存区域"><a href="#内存区域" class="headerlink" title="内存区域"></a>内存区域</h1><ol>
+<li>程序计数器</li>
+<li>java方法栈</li>
+<li>本地方法栈</li>
+<li>程序计数器</li>
+<li>方法区</li>
+</ol>
+<h1 id="方法区"><a href="#方法区" class="headerlink" title="方法区"></a>方法区</h1><ol>
+<li>类信息</li>
+<li>常量池</li>
+<li>静态变量</li>
+<li>javac编译产生的符号引用，字面量，jit编译优化后的代码</li>
+<li>等等</li>
+</ol>
+        
+          <p class="article-more-link">
+            <a href="/2018/06/23/jmm/#more" target="_blank">more</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/06/23/jmm/" data-id="cjji8to3r002albv8kmcs6blg" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jmm/">jmm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jvm/">jvm</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-happen-before" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/06/23/happen-before/" class="article-date">
+  <time datetime="2018-06-23T07:54:35.000Z" itemprop="datePublished">2018-06-23</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/java/">java</a>►<a class="article-category-link" href="/categories/java/jvm/">jvm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/06/23/happen-before/">happen-before</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <ol>
+<li>相互之间有依赖的代码，前面的代码先执行，后面的代码再执行</li>
+<li>锁定规则，lock操作发生在unlock操作之前</li>
+<li>volatile变量的读取发生在写入操作之后（storeLoad和storeStore屏障）</li>
+<li>A先发生于B，B先发生于C，则A先发生于C</li>
+<li>线程的start方法发生于后续的状态控制方法之前，所有的非stop()方法都发生在stop()方法之前</li>
+<li>线程的interrupt方法发生于检测到中断之前</li>
+<li>线程中所有的操作都先行发生于线程的终止检测，我们可以通过Thread.join()方法结束、Thread.isAlive()的返回值手段检测到线程已经终止执行</li>
+<li>一个对象的初始化早于finalize之前</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/06/23/happen-before/" data-id="cjji8to3j001rlbv8ix1ed3jg" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jmm/">jmm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jvm/">jvm</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-gc介绍" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/06/22/gc介绍/" class="article-date">
+  <time datetime="2018-06-22T11:36:16.000Z" itemprop="datePublished">2018-06-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/java/">java</a>►<a class="article-category-link" href="/categories/java/jvm/">jvm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/06/22/gc介绍/">gc介绍</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="GC分类"><a href="#GC分类" class="headerlink" title="GC分类"></a>GC分类</h2><h3 id="partial-gc"><a href="#partial-gc" class="headerlink" title="partial gc"></a>partial gc</h3><ol>
+<li>minor gc，回收年轻代</li>
+<li>major gc，回收老年代</li>
+<li>mixed gc，回收年轻代和一部分老年代，只有G1有</li>
+</ol>
+<h3 id="full-gc"><a href="#full-gc" class="headerlink" title="full gc"></a>full gc</h3><p>回收整个java堆的gc</p>
+<h3 id="full-gc的触发的原因："><a href="#full-gc的触发的原因：" class="headerlink" title="full gc的触发的原因："></a>full gc的触发的原因：</h3><ol>
+<li>由于young gc前的预估发现老年代存放不下新生代晋升的对象（PromotionFailure）</li>
+<li>创建大对象的时候，没有连续的内存存储，老年代不足以存放</li>
+<li>显示的调用了System.GC，并且配合上了jvm参数</li>
+</ol>
+<p><strong>一般来说，Full GC == Major GC，因为发生major gc的时候一般都会先minor gc，但又不完全等价，Full GC需要回收年轻代和老年代，major gc不会</strong><br>
+        
+          <p class="article-more-link">
+            <a href="/2018/06/22/gc介绍/#more" target="_blank">more</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/06/22/gc介绍/" data-id="cjji8to3h001mlbv8gwxlup15" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cms/">cms</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/g1/">g1</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/gc/">gc</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jvm/">jvm</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/06/22/hello-world/" class="article-date">
+  <time datetime="2018-06-22T11:27:35.000Z" itemprop="datePublished">2018-06-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/随笔/">随笔</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/06/22/hello-world/">hello world</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <p>好久没更新blog了，原有的文章也已经丢失，现在将自己本地积累的传上来。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/06/22/hello-world/" data-id="cjji8to3k001ulbv89gbrqrjl" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/随笔/">随笔</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-gc日志" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/06/22/gc日志/" class="article-date">
+  <time datetime="2018-06-22T11:27:35.000Z" itemprop="datePublished">2018-06-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/java/">java</a>►<a class="article-category-link" href="/categories/java/jvm/">jvm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/06/22/gc日志/">gc日志</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="cms参数"><a href="#cms参数" class="headerlink" title="cms参数"></a>cms参数</h2><p>-XX:+CMSClassUnloadingEnabled -XX:CMSInitiatingOccupancyFraction=80 -XX:CMSMaxAbortablePrecleanTime=5000 -XX:+ExplicitGCInvokesConcurrent -XX:InitialHeapSize=8589934592 -XX:MaxDirectMemorySize=4294967296 -XX:MaxHeapSize=8589934592 -XX:MaxNewSize=6442450944 -XX:NewSize=6442450944 -XX:OldPLABSize=16 -XX:ParallelGCThreads=4 -XX:+PrintGC -XX:+PrintGCDateStamps -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:SurvivorRatio=4 -XX:+UseCMSCompactAtFullCollection -XX:+UseCMSInitiatingOccupancyOnly -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:+UseConcMarkSweepGC -XX:+UseParNewGC<br>
+        
+          <p class="article-more-link">
+            <a href="/2018/06/22/gc日志/#more" target="_blank">more</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/06/22/gc日志/" data-id="cjji8to3n001zlbv86defvdru" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cms/">cms</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/g1/">g1</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/gc/">gc</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jvm/">jvm</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/4/">&laquo; 上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">32</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/java/jvm/">jvm</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/基础/">基础</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/多线程/">多线程</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/并发/">并发</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/集合/">集合</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/中间件/">中间件</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/分布式/">分布式</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/分布式/微服务/">微服务</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/开源/">开源</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/随笔/">随笔</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/cms/">cms</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/g1/">g1</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gc/">gc</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/io/">io</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a><span class="tag-list-count">29</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jit/">jit</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jmm/">jmm</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rocketmq/">rocketmq</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sharding-jdbc/">sharding-jdbc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tcp/">tcp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/中间件/">中间件</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/关键字/">关键字</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式/">分布式</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/基础/">基础</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多线程/">多线程</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/并发/">并发</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/开源/">开源</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微服务/">微服务</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/攻击/">攻击</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/框架/">框架</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/源码/">源码</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/设计模式/">设计模式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/锁/">锁</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/集合/">集合</a><span class="tag-list-count">5</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/cms/" style="font-size: 11.11px;">cms</a> <a href="/tags/g1/" style="font-size: 11.11px;">g1</a> <a href="/tags/gc/" style="font-size: 11.11px;">gc</a> <a href="/tags/io/" style="font-size: 10px;">io</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/jit/" style="font-size: 10px;">jit</a> <a href="/tags/jmm/" style="font-size: 11.11px;">jmm</a> <a href="/tags/jvm/" style="font-size: 16.67px;">jvm</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/redis/" style="font-size: 11.11px;">redis</a> <a href="/tags/rocketmq/" style="font-size: 10px;">rocketmq</a> <a href="/tags/sharding-jdbc/" style="font-size: 10px;">sharding-jdbc</a> <a href="/tags/tcp/" style="font-size: 10px;">tcp</a> <a href="/tags/中间件/" style="font-size: 17.78px;">中间件</a> <a href="/tags/关键字/" style="font-size: 11.11px;">关键字</a> <a href="/tags/分布式/" style="font-size: 12.22px;">分布式</a> <a href="/tags/基础/" style="font-size: 15.56px;">基础</a> <a href="/tags/多线程/" style="font-size: 14.44px;">多线程</a> <a href="/tags/并发/" style="font-size: 14.44px;">并发</a> <a href="/tags/开源/" style="font-size: 13.33px;">开源</a> <a href="/tags/微服务/" style="font-size: 10px;">微服务</a> <a href="/tags/攻击/" style="font-size: 10px;">攻击</a> <a href="/tags/框架/" style="font-size: 10px;">框架</a> <a href="/tags/源码/" style="font-size: 18.89px;">源码</a> <a href="/tags/网络/" style="font-size: 10px;">网络</a> <a href="/tags/设计模式/" style="font-size: 10px;">设计模式</a> <a href="/tags/锁/" style="font-size: 10px;">锁</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a> <a href="/tags/集合/" style="font-size: 14.44px;">集合</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">42</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/07/12/设计：权限系统/">设计：权限系统</a>
+          </li>
+        
+          <li>
+            <a href="/2018/07/12/设计：秒杀系统/">设计：秒杀系统</a>
+          </li>
+        
+          <li>
+            <a href="/2018/07/12/设计：压测系统/">设计：压测系统</a>
+          </li>
+        
+          <li>
+            <a href="/2018/07/11/DTS技术调研：quartz深入/">DTS技术调研：quartz深入</a>
+          </li>
+        
+          <li>
+            <a href="/2018/07/07/DTS技术调研：抢占式任务调度/">DTS技术调研：抢占式任务调度</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 陈斌<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

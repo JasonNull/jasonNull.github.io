@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>List分析 | 陈斌的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="ArrayList静态属性 DEFAULT_CAPACITY，默认大小，10 EMPTY_ELEMENTDATA，初始数组，空 DEFAULTCAPACITY_EMPTY_ELEMENTDATA，默认大小时使用的数组，空 MAX_ARRAY_SIZE，elementData最大大小，这边有歧义，数组最大大小还是Integer.MAX_VALUE  成员属性 elementData，存储元素的数组">
+<meta name="keywords" content="java,源码,集合">
+<meta property="og:type" content="article">
+<meta property="og:title" content="List分析">
+<meta property="og:url" content="http://yoursite.com/2018/06/23/List分析/index.html">
+<meta property="og:site_name" content="陈斌的博客">
+<meta property="og:description" content="ArrayList静态属性 DEFAULT_CAPACITY，默认大小，10 EMPTY_ELEMENTDATA，初始数组，空 DEFAULTCAPACITY_EMPTY_ELEMENTDATA，默认大小时使用的数组，空 MAX_ARRAY_SIZE，elementData最大大小，这边有歧义，数组最大大小还是Integer.MAX_VALUE  成员属性 elementData，存储元素的数组">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-06-23T10:51:35.413Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="List分析">
+<meta name="twitter:description" content="ArrayList静态属性 DEFAULT_CAPACITY，默认大小，10 EMPTY_ELEMENTDATA，初始数组，空 DEFAULTCAPACITY_EMPTY_ELEMENTDATA，默认大小时使用的数组，空 MAX_ARRAY_SIZE，elementData最大大小，这边有歧义，数组最大大小还是Integer.MAX_VALUE  成员属性 elementData，存储元素的数组">
+  
+    <link rel="alternate" href="/atom.xml" title="陈斌的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/css/images/favicon.png" type="image/x-icon">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">陈斌的博客</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">技术宅的站点</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+  <!-- <base target="_blank" /> -->
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-List分析" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/06/23/List分析/" class="article-date">
+  <time datetime="2018-06-23T10:38:29.000Z" itemprop="datePublished">2018-06-23</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/java/">java</a>►<a class="article-category-link" href="/categories/java/集合/">集合</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      List分析
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          <div id="toc" class="toc-article">
+            <strong class="toc-title">文章目录</strong>
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ArrayList"><span class="toc-number">1.</span> <span class="toc-text">ArrayList</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#静态属性"><span class="toc-number">1.1.</span> <span class="toc-text">静态属性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#成员属性"><span class="toc-number">1.2.</span> <span class="toc-text">成员属性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#特点"><span class="toc-number">1.3.</span> <span class="toc-text">特点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#适用场景"><span class="toc-number">1.4.</span> <span class="toc-text">适用场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#主要方法"><span class="toc-number">1.5.</span> <span class="toc-text">主要方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#grow-扩容"><span class="toc-number">1.5.1.</span> <span class="toc-text">grow(扩容)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#contains"><span class="toc-number">1.5.2.</span> <span class="toc-text">contains</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#add"><span class="toc-number">1.5.3.</span> <span class="toc-text">add</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#subList"><span class="toc-number">1.5.4.</span> <span class="toc-text">subList</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#spliterator"><span class="toc-number">1.5.5.</span> <span class="toc-text">spliterator</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#equals和hashCode"><span class="toc-number">1.5.6.</span> <span class="toc-text">equals和hashCode</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#LinkedList"><span class="toc-number">2.</span> <span class="toc-text">LinkedList</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#特点-1"><span class="toc-number">2.1.</span> <span class="toc-text">特点</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CopyOnWriteArrayList"><span class="toc-number">3.</span> <span class="toc-text">CopyOnWriteArrayList</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#静态属性-1"><span class="toc-number">3.1.</span> <span class="toc-text">静态属性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#成员属性-1"><span class="toc-number">3.2.</span> <span class="toc-text">成员属性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#特点-2"><span class="toc-number">3.3.</span> <span class="toc-text">特点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用场景"><span class="toc-number">3.4.</span> <span class="toc-text">使用场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#主要方法-1"><span class="toc-number">3.5.</span> <span class="toc-text">主要方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#get"><span class="toc-number">3.5.1.</span> <span class="toc-text">get</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#add-1"><span class="toc-number">3.5.2.</span> <span class="toc-text">add</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#remove"><span class="toc-number">3.5.3.</span> <span class="toc-text">remove</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#toArray"><span class="toc-number">3.5.4.</span> <span class="toc-text">toArray</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#equals和hashCode-1"><span class="toc-number">3.5.5.</span> <span class="toc-text">equals和hashCode</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Vector"><span class="toc-number">4.</span> <span class="toc-text">Vector</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Stack"><span class="toc-number">5.</span> <span class="toc-text">Stack</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ListIterator"><span class="toc-number">6.</span> <span class="toc-text">ListIterator</span></a></li></ol>
+          </div>
+        
+        <h1 id="ArrayList"><a href="#ArrayList" class="headerlink" title="ArrayList"></a>ArrayList</h1><h2 id="静态属性"><a href="#静态属性" class="headerlink" title="静态属性"></a>静态属性</h2><ol>
+<li>DEFAULT_CAPACITY，默认大小，10</li>
+<li>EMPTY_ELEMENTDATA，初始数组，空</li>
+<li>DEFAULTCAPACITY_EMPTY_ELEMENTDATA，默认大小时使用的数组，空</li>
+<li>MAX_ARRAY_SIZE，elementData最大大小，这边有歧义，数组最大大小还是Integer.MAX_VALUE</li>
+</ol>
+<h2 id="成员属性"><a href="#成员属性" class="headerlink" title="成员属性"></a>成员属性</h2><ol>
+<li>elementData，存储元素的数组</li>
+<li>size，大小</li>
+<li>modCount，操作次数（在AbstractList里面），每次进行非幂等操作的时候，都会增加这个值<a id="more"></a>
+</li>
+</ol>
+<h2 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h2><ol>
+<li>大小增长是1.5倍，默认大小时10</li>
+<li>indexOf中使用了equals</li>
+<li>内部大量使用<strong>Array.copyOf()</strong> [创建一个全新数组], System.arraycopy() [数组之间元素的复制]</li>
+<li>clone方法内部使用了Arrays.copyOf()</li>
+<li>add(int index, E element)中用了System.arraycopy进行数组之间的复制</li>
+<li>clear()只是清除了引用，但是没有回收数组空间</li>
+<li>batchRemove()，里面有一个经典算法（如何在O(n)的时间范围内移除移除A数组中包含B数组的所有元素）</li>
+<li>modCount在ListIterator和Iterator中用于保证failfast（ConcurrentModificationException)</li>
+<li>ArrayListSpliterator用于并行分割计算</li>
+<li>List有两种迭代器，Iterator和ListIterator（可以前后迭代）</li>
+<li>SubList返回的不是一个全新的List，而是对原有List的一个引用（坑点）</li>
+<li>modCount是带有局限性的</li>
+</ol>
+<h2 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h2><p>适用于可动态扩容的数组</p>
+<h2 id="主要方法"><a href="#主要方法" class="headerlink" title="主要方法"></a>主要方法</h2><h3 id="grow-扩容"><a href="#grow-扩容" class="headerlink" title="grow(扩容)"></a>grow(扩容)</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">grow</span><span class="params">(<span class="keyword">int</span> minCapacity)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> oldCapacity = elementData.length;</span><br><span class="line">    <span class="comment">// 1.5倍扩容</span></span><br><span class="line">    <span class="keyword">int</span> newCapacity = oldCapacity + (oldCapacity &gt;&gt; <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">if</span> (newCapacity - minCapacity &lt; <span class="number">0</span>)</span><br><span class="line">        newCapacity = minCapacity;</span><br><span class="line">    <span class="keyword">if</span> (newCapacity - MAX_ARRAY_SIZE &gt; <span class="number">0</span>)</span><br><span class="line">        newCapacity = hugeCapacity(minCapacity);</span><br><span class="line">    elementData = Arrays.copyOf(elementData, newCapacity);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="contains"><a href="#contains" class="headerlink" title="contains"></a>contains</h3><p>用==或者equals做比较<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 采用equals做比较</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">contains</span><span class="params">(Object o)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> indexOf(o) &gt;= <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">indexOf</span><span class="params">(Object o)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (o == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size; i++)</span><br><span class="line">            <span class="keyword">if</span> (elementData[i]==<span class="keyword">null</span>)</span><br><span class="line">                <span class="keyword">return</span> i;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size; i++)</span><br><span class="line">            <span class="keyword">if</span> (o.equals(elementData[i]))</span><br><span class="line">                <span class="keyword">return</span> i;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="add"><a href="#add" class="headerlink" title="add"></a>add</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">add</span><span class="params">(E e)</span> </span>&#123;</span><br><span class="line">    ensureCapacityInternal(size + <span class="number">1</span>);  <span class="comment">// Increments modCount!!</span></span><br><span class="line">    elementData[size++] = e;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="subList"><a href="#subList" class="headerlink" title="subList"></a>subList</h3><p>很多人认为subList()返回的是一个全新的list，但<strong>不是</strong>。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">SubList</span> <span class="keyword">extends</span> <span class="title">AbstractList</span>&lt;<span class="title">E</span>&gt; <span class="keyword">implements</span> <span class="title">RandomAccess</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> AbstractList&lt;E&gt; parent;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> parentOffset;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> offset;</span><br><span class="line">    <span class="keyword">int</span> size;</span><br><span class="line"></span><br><span class="line">    SubList(AbstractList&lt;E&gt; parent,</span><br><span class="line">            <span class="keyword">int</span> offset, <span class="keyword">int</span> fromIndex, <span class="keyword">int</span> toIndex) &#123;</span><br><span class="line">        <span class="keyword">this</span>.parent = parent;</span><br><span class="line">        <span class="keyword">this</span>.parentOffset = fromIndex;</span><br><span class="line">        <span class="keyword">this</span>.offset = offset + fromIndex;</span><br><span class="line">        <span class="keyword">this</span>.size = toIndex - fromIndex;</span><br><span class="line">        <span class="keyword">this</span>.modCount = ArrayList.<span class="keyword">this</span>.modCount;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 会修改原有的List</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> E <span class="title">set</span><span class="params">(<span class="keyword">int</span> index, E e)</span> </span>&#123;</span><br><span class="line">        rangeCheck(index);</span><br><span class="line">        checkForComodification();</span><br><span class="line">        E oldValue = ArrayList.<span class="keyword">this</span>.elementData(offset + index);</span><br><span class="line">        ArrayList.<span class="keyword">this</span>.elementData[offset + index] = e;</span><br><span class="line">        <span class="keyword">return</span> oldValue;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="spliterator"><a href="#spliterator" class="headerlink" title="spliterator"></a>spliterator</h3><p>可以使用此对list做切割，然后并行的对每个部分做操作<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">ArrayListSpliterator</span>&lt;<span class="title">E</span>&gt; <span class="keyword">implements</span> <span class="title">Spliterator</span>&lt;<span class="title">E</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> ArrayList&lt;E&gt; list;</span><br><span class="line">    <span class="comment">// fence</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> index; <span class="comment">// current index, modified on advance/split</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> fence; <span class="comment">// -1 until used; then one past last index</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> expectedModCount; <span class="comment">// initialized when fence set</span></span><br><span class="line"></span><br><span class="line">    ArrayListSpliterator(ArrayList&lt;E&gt; list, <span class="keyword">int</span> origin, <span class="keyword">int</span> fence,</span><br><span class="line">                            <span class="keyword">int</span> expectedModCount) &#123;</span><br><span class="line">        <span class="keyword">this</span>.list = list; <span class="comment">// OK if null unless traversed</span></span><br><span class="line">        <span class="keyword">this</span>.index = origin;</span><br><span class="line">        <span class="keyword">this</span>.fence = fence;</span><br><span class="line">        <span class="keyword">this</span>.expectedModCount = expectedModCount;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">getFence</span><span class="params">()</span> </span>&#123; <span class="comment">// initialize fence to size on first use</span></span><br><span class="line">        <span class="keyword">int</span> hi; <span class="comment">// (a specialized variant appears in method forEach)</span></span><br><span class="line">        ArrayList&lt;E&gt; lst;</span><br><span class="line">        <span class="keyword">if</span> ((hi = fence) &lt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> ((lst = list) == <span class="keyword">null</span>)</span><br><span class="line">                hi = fence = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                expectedModCount = lst.modCount;</span><br><span class="line">                hi = fence = lst.size;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> hi;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ArrayListSpliterator&lt;E&gt; <span class="title">trySplit</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 将现有的范围[index, fence)，分为</span></span><br><span class="line">        <span class="comment">// [index, (index + fence)/2) 和 [(index + fence)/2,fence]</span></span><br><span class="line">        <span class="keyword">int</span> hi = getFence(), lo = index, mid = (lo + hi) &gt;&gt;&gt; <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">return</span> (lo &gt;= mid) ? <span class="keyword">null</span> : <span class="comment">// divide range in half unless too small</span></span><br><span class="line">            <span class="keyword">new</span> ArrayListSpliterator&lt;E&gt;(list, lo, index = mid,</span><br><span class="line">                                        expectedModCount);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="equals和hashCode"><a href="#equals和hashCode" class="headerlink" title="equals和hashCode"></a>equals和hashCode</h3><p>equals需要逐个元素的比较，hashCode会对所有的元素做hashCode</p>
+<hr>
+<h1 id="LinkedList"><a href="#LinkedList" class="headerlink" title="LinkedList"></a>LinkedList</h1><p>不做详细分析，只写特点。</p>
+<h2 id="特点-1"><a href="#特点-1" class="headerlink" title="特点"></a>特点</h2><ol>
+<li>底层数据结构是链表</li>
+<li>插入删除复杂度为O(1)，查找复杂度为O(n)</li>
+<li>适用于那种插入删除频繁的地方，可用于构建可变长队列，栈</li>
+</ol>
+<hr>
+<h1 id="CopyOnWriteArrayList"><a href="#CopyOnWriteArrayList" class="headerlink" title="CopyOnWriteArrayList"></a>CopyOnWriteArrayList</h1><h2 id="静态属性-1"><a href="#静态属性-1" class="headerlink" title="静态属性"></a>静态属性</h2><p>无</p>
+<h2 id="成员属性-1"><a href="#成员属性-1" class="headerlink" title="成员属性"></a>成员属性</h2><ol>
+<li>array<br>Object数组，用于存储元素</li>
+<li>lock<br>可重入锁，用于控制非幂等操作的并发安全性问题。<h2 id="特点-2"><a href="#特点-2" class="headerlink" title="特点"></a>特点</h2></li>
+<li>初始长度为0，每次做非幂等操作（写入，删除）的时候都会创建一个全新的数组</li>
+<li>写入时候复制，即使每次长度只增加1（这样有一个好处是遍历的时候不会出现问题）</li>
+<li>内部大量使用Arrays.copyOf()[整段复制]和System.arrayCopy()[分段复制，native函数]<h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2>特别适合那种写入少，读取量大的情况。<br>缺点是写入特别耗时间。<h2 id="主要方法-1"><a href="#主要方法-1" class="headerlink" title="主要方法"></a>主要方法</h2><h3 id="get"><a href="#get" class="headerlink" title="get"></a>get</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> E <span class="title">get</span><span class="params">(Object[] a, <span class="keyword">int</span> index)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (E) a[index];</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// getArray返回的是当前array</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> E <span class="title">get</span><span class="params">(<span class="keyword">int</span> index)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> get(getArray(), index);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="add-1"><a href="#add-1" class="headerlink" title="add"></a>add</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">add</span><span class="params">(E e)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> ReentrantLock lock = <span class="keyword">this</span>.lock;</span><br><span class="line">    <span class="comment">// 加锁</span></span><br><span class="line">    lock.lock();</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        Object[] elements = getArray();</span><br><span class="line">        <span class="keyword">int</span> len = elements.length;</span><br><span class="line">        <span class="comment">// 复制整个数组</span></span><br><span class="line">        Object[] newElements = Arrays.copyOf(elements, len + <span class="number">1</span>);</span><br><span class="line">        newElements[len] = e;</span><br><span class="line">        setArray(newElements);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        lock.unlock();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="remove"><a href="#remove" class="headerlink" title="remove"></a>remove</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">remove</span><span class="params">(Object o, Object[] snapshot, <span class="keyword">int</span> index)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> ReentrantLock lock = <span class="keyword">this</span>.lock;</span><br><span class="line">    lock.lock();</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        Object[] current = getArray();</span><br><span class="line">        <span class="keyword">int</span> len = current.length;</span><br><span class="line">        <span class="comment">// snapshot不等于current，代表当前index可能已经过期了，需要再重新寻找</span></span><br><span class="line">        <span class="comment">// 至于为什么这么做，主要是为了减少加锁时间，能够提升并发操作的性能</span></span><br><span class="line">        <span class="keyword">if</span> (snapshot != current) findIndex: &#123;</span><br><span class="line">            <span class="keyword">int</span> prefix = Math.min(index, len);</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; prefix; i++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (current[i] != snapshot[i] &amp;&amp; eq(o, current[i])) &#123;</span><br><span class="line">                    index = i;</span><br><span class="line">                    <span class="keyword">break</span> findIndex;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (index &gt;= len)</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">            <span class="keyword">if</span> (current[index] == o)</span><br><span class="line">                <span class="keyword">break</span> findIndex;</span><br><span class="line">            index = indexOf(o, current, index, len);</span><br><span class="line">            <span class="keyword">if</span> (index &lt; <span class="number">0</span>)</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        Object[] newElements = <span class="keyword">new</span> Object[len - <span class="number">1</span>];</span><br><span class="line">        System.arraycopy(current, <span class="number">0</span>, newElements, <span class="number">0</span>, index);</span><br><span class="line">        System.arraycopy(current, index + <span class="number">1</span>,</span><br><span class="line">                            newElements, index,</span><br><span class="line">                            len - index - <span class="number">1</span>);</span><br><span class="line">        setArray(newElements);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        lock.unlock();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="toArray"><a href="#toArray" class="headerlink" title="toArray"></a>toArray</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 返回一个全新的数组</span></span><br><span class="line"><span class="keyword">public</span> Object[] toArray() &#123;</span><br><span class="line">    Object[] elements = getArray();</span><br><span class="line">    <span class="keyword">return</span> Arrays.copyOf(elements, elements.length);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 原数组长度不够，创建新数组，返回新数组的信用</span></span><br><span class="line"><span class="keyword">public</span> &lt;T&gt; T[] toArray(T a[]) &#123;</span><br><span class="line">    Object[] elements = getArray();</span><br><span class="line">    <span class="keyword">int</span> len = elements.length;</span><br><span class="line">    <span class="keyword">if</span> (a.length &lt; len)</span><br><span class="line">        <span class="keyword">return</span> (T[]) Arrays.copyOf(elements, len, a.getClass());</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        System.arraycopy(elements, <span class="number">0</span>, a, <span class="number">0</span>, len);</span><br><span class="line">        <span class="keyword">if</span> (a.length &gt; len)</span><br><span class="line">            a[len] = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">return</span> a;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="equals和hashCode-1"><a href="#equals和hashCode-1" class="headerlink" title="equals和hashCode"></a>equals和hashCode</h3><p>同ArrayList</p>
+<hr>
+<h1 id="Vector"><a href="#Vector" class="headerlink" title="Vector"></a>Vector</h1><p>jdk1.2推出的，使用synchronized加锁保证线程安全性</p>
+<h1 id="Stack"><a href="#Stack" class="headerlink" title="Stack"></a>Stack</h1><p>继承于Vector，也是线程安全的，实现了栈而已。</p>
+<h1 id="ListIterator"><a href="#ListIterator" class="headerlink" title="ListIterator"></a>ListIterator</h1><p>和Iterator的主要区别是多了previous，hasPrevious，nextIndex，set和add方法</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/06/23/List分析/" data-id="cjji8to30000llbv82e694i2o" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/源码/">源码</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/集合/">集合</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/06/23/Queue分析/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Queue分析
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/06/23/集合/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">集合</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">32</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/java/jvm/">jvm</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/基础/">基础</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/多线程/">多线程</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/并发/">并发</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/集合/">集合</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/中间件/">中间件</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/分布式/">分布式</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/分布式/微服务/">微服务</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/开源/">开源</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/随笔/">随笔</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/cms/">cms</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/g1/">g1</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gc/">gc</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/io/">io</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a><span class="tag-list-count">29</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jit/">jit</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jmm/">jmm</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rocketmq/">rocketmq</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sharding-jdbc/">sharding-jdbc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tcp/">tcp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/中间件/">中间件</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/关键字/">关键字</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式/">分布式</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/基础/">基础</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多线程/">多线程</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/并发/">并发</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/开源/">开源</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微服务/">微服务</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/攻击/">攻击</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/框架/">框架</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/源码/">源码</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/设计模式/">设计模式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/锁/">锁</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/集合/">集合</a><span class="tag-list-count">5</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/cms/" style="font-size: 11.11px;">cms</a> <a href="/tags/g1/" style="font-size: 11.11px;">g1</a> <a href="/tags/gc/" style="font-size: 11.11px;">gc</a> <a href="/tags/io/" style="font-size: 10px;">io</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/jit/" style="font-size: 10px;">jit</a> <a href="/tags/jmm/" style="font-size: 11.11px;">jmm</a> <a href="/tags/jvm/" style="font-size: 16.67px;">jvm</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/redis/" style="font-size: 11.11px;">redis</a> <a href="/tags/rocketmq/" style="font-size: 10px;">rocketmq</a> <a href="/tags/sharding-jdbc/" style="font-size: 10px;">sharding-jdbc</a> <a href="/tags/tcp/" style="font-size: 10px;">tcp</a> <a href="/tags/中间件/" style="font-size: 17.78px;">中间件</a> <a href="/tags/关键字/" style="font-size: 11.11px;">关键字</a> <a href="/tags/分布式/" style="font-size: 12.22px;">分布式</a> <a href="/tags/基础/" style="font-size: 15.56px;">基础</a> <a href="/tags/多线程/" style="font-size: 14.44px;">多线程</a> <a href="/tags/并发/" style="font-size: 14.44px;">并发</a> <a href="/tags/开源/" style="font-size: 13.33px;">开源</a> <a href="/tags/微服务/" style="font-size: 10px;">微服务</a> <a href="/tags/攻击/" style="font-size: 10px;">攻击</a> <a href="/tags/框架/" style="font-size: 10px;">框架</a> <a href="/tags/源码/" style="font-size: 18.89px;">源码</a> <a href="/tags/网络/" style="font-size: 10px;">网络</a> <a href="/tags/设计模式/" style="font-size: 10px;">设计模式</a> <a href="/tags/锁/" style="font-size: 10px;">锁</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a> <a href="/tags/集合/" style="font-size: 14.44px;">集合</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">42</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/07/12/设计：权限系统/">设计：权限系统</a>
+          </li>
+        
+          <li>
+            <a href="/2018/07/12/设计：秒杀系统/">设计：秒杀系统</a>
+          </li>
+        
+          <li>
+            <a href="/2018/07/12/设计：压测系统/">设计：压测系统</a>
+          </li>
+        
+          <li>
+            <a href="/2018/07/11/DTS技术调研：quartz深入/">DTS技术调研：quartz深入</a>
+          </li>
+        
+          <li>
+            <a href="/2018/07/07/DTS技术调研：抢占式任务调度/">DTS技术调研：抢占式任务调度</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 陈斌<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

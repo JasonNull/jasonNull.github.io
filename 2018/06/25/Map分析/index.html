@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Map分析 | 陈斌的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="HashMap成员属性 Node&amp;lt;K,V&amp;gt;[]table，存储数据的数组 Set&amp;lt;Map.Entry&amp;lt;K,V&amp;gt;&amp;gt;entrySet，遍历时使用的entrySet size，当前大小 modCount，被非幂等操作改变的次数，entrySet中的ConcurrentModificationException threshold，下次resize时候可能需要满足的大小">
+<meta name="keywords" content="java,源码,集合">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Map分析">
+<meta property="og:url" content="http://yoursite.com/2018/06/25/Map分析/index.html">
+<meta property="og:site_name" content="陈斌的博客">
+<meta property="og:description" content="HashMap成员属性 Node&amp;lt;K,V&amp;gt;[]table，存储数据的数组 Set&amp;lt;Map.Entry&amp;lt;K,V&amp;gt;&amp;gt;entrySet，遍历时使用的entrySet size，当前大小 modCount，被非幂等操作改变的次数，entrySet中的ConcurrentModificationException threshold，下次resize时候可能需要满足的大小">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/images/putVal1.png">
+<meta property="og:image" content="http://yoursite.com/images/putVal2.png">
+<meta property="og:image" content="http://yoursite.com/images/get1.png">
+<meta property="og:image" content="http://yoursite.com/images/get2.png">
+<meta property="og:updated_time" content="2018-06-25T12:48:44.952Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Map分析">
+<meta name="twitter:description" content="HashMap成员属性 Node&amp;lt;K,V&amp;gt;[]table，存储数据的数组 Set&amp;lt;Map.Entry&amp;lt;K,V&amp;gt;&amp;gt;entrySet，遍历时使用的entrySet size，当前大小 modCount，被非幂等操作改变的次数，entrySet中的ConcurrentModificationException threshold，下次resize时候可能需要满足的大小">
+<meta name="twitter:image" content="http://yoursite.com/images/putVal1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="陈斌的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/css/images/favicon.png" type="image/x-icon">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">陈斌的博客</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">技术宅的站点</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+  <!-- <base target="_blank" /> -->
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Map分析" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/06/25/Map分析/" class="article-date">
+  <time datetime="2018-06-25T12:01:36.000Z" itemprop="datePublished">2018-06-25</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/java/">java</a>►<a class="article-category-link" href="/categories/java/集合/">集合</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Map分析
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          <div id="toc" class="toc-article">
+            <strong class="toc-title">文章目录</strong>
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#HashMap"><span class="toc-number">1.</span> <span class="toc-text">HashMap</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#成员属性"><span class="toc-number">1.1.</span> <span class="toc-text">成员属性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#静态属性"><span class="toc-number">1.2.</span> <span class="toc-text">静态属性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#主要方法"><span class="toc-number">1.3.</span> <span class="toc-text">主要方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#hash"><span class="toc-number">1.3.1.</span> <span class="toc-text">hash</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#get"><span class="toc-number">1.3.2.</span> <span class="toc-text">get</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#put"><span class="toc-number">1.3.3.</span> <span class="toc-text">put</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#resize"><span class="toc-number">1.3.4.</span> <span class="toc-text">resize</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#entrySet-keySet"><span class="toc-number">1.3.5.</span> <span class="toc-text">entrySet, keySet</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#原理"><span class="toc-number">1.3.5.1.</span> <span class="toc-text">原理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#用法"><span class="toc-number">1.3.5.2.</span> <span class="toc-text">用法</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ConcurrentHashMap"><span class="toc-number">2.</span> <span class="toc-text">ConcurrentHashMap</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#jdk7"><span class="toc-number">2.1.</span> <span class="toc-text">jdk7</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#静态属性-1"><span class="toc-number">2.2.</span> <span class="toc-text">静态属性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#成员属性-1"><span class="toc-number">2.3.</span> <span class="toc-text">成员属性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#主要方法-1"><span class="toc-number">2.4.</span> <span class="toc-text">主要方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#resize-1"><span class="toc-number">2.4.1.</span> <span class="toc-text">resize</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#putVal"><span class="toc-number">2.4.2.</span> <span class="toc-text">putVal</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#get-1"><span class="toc-number">2.4.3.</span> <span class="toc-text">get</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#LinkedHashMap"><span class="toc-number">3.</span> <span class="toc-text">LinkedHashMap</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#成员属性-2"><span class="toc-number">3.1.</span> <span class="toc-text">成员属性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#主要方法-2"><span class="toc-number">3.2.</span> <span class="toc-text">主要方法</span></a></li></ol></li></ol>
+          </div>
+        
+        <h1 id="HashMap"><a href="#HashMap" class="headerlink" title="HashMap"></a>HashMap</h1><h2 id="成员属性"><a href="#成员属性" class="headerlink" title="成员属性"></a>成员属性</h2><ol>
+<li>Node&lt;K,V&gt;[]table，存储数据的数组</li>
+<li>Set&lt;Map.Entry&lt;K,V&gt;&gt;entrySet，遍历时使用的entrySet</li>
+<li>size，当前大小</li>
+<li>modCount，被非幂等操作改变的次数，entrySet中的ConcurrentModificationException</li>
+<li>threshold，下次resize时候可能需要满足的大小</li>
+<li>loadFactor，负载因子，size &gt; (threshold = capacity * loadFactor)的时候，可能会resize，存在的作用是用于开发人员手动控制resize时具体的数组元素的多少。<a id="more"></a>
+</li>
+</ol>
+<h2 id="静态属性"><a href="#静态属性" class="headerlink" title="静态属性"></a>静态属性</h2><ol>
+<li>DEFAULT_INITIAL_CAPACITY，初始大小，16</li>
+<li>MAXIMUM_CAPACITY，最大大小，2的30次方</li>
+<li>DEFAULT_LOAD_FACTOR，初始负载因子，0.75</li>
+<li>TREEIFY_THRESHOLD，treeify时候bin的最小大小，8</li>
+<li>UNTREEIFY_THRESHOLD，untreeify时bin内元素的最小大小，6</li>
+<li>MIN_TREEIFY_CAPACITY，最小treeify的容量，64，大于64才会treeify</li>
+</ol>
+<h2 id="主要方法"><a href="#主要方法" class="headerlink" title="主要方法"></a>主要方法</h2><h3 id="hash"><a href="#hash" class="headerlink" title="hash"></a>hash</h3><p>虽然HashMap的bucket数量最大为Integer.MAX_VALUE，但是绝大部分的Map的bucket数量都是较小的，hash码也只用到低n位。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">hash</span><span class="params">(Object key)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> h;</span><br><span class="line">    <span class="comment">// 混合原始哈希码的高位和低位，以此来加大低位的随机性</span></span><br><span class="line">    <span class="comment">// 主要还是为了避免用户的hashCode算法有问题，低位散列不均衡</span></span><br><span class="line">    <span class="keyword">return</span> (key == <span class="keyword">null</span>) ? <span class="number">0</span> : (h = key.hashCode()) ^ (h &gt;&gt;&gt; <span class="number">16</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="get"><a href="#get" class="headerlink" title="get"></a>get</h3><ol>
+<li>根据key的hash，计算出bucket的位置</li>
+<li>如果bucket为空，返回空</li>
+<li>如果是链表，遍历链表，其中使用equals比较</li>
+<li>如果是红黑树的话，遍历整颗树，其中使用hash比较或者使用Comparable的compareTo方法作比较</li>
+</ol>
+<h3 id="put"><a href="#put" class="headerlink" title="put"></a>put</h3><p>使用尾插法，因为put的过程中需要遍历整个链表，查看是否存在相同的key</p>
+<ol>
+<li>如果table为空，进行resize()</li>
+<li>根据hash计算bucket的index</li>
+<li>取得bucket后，如果是空，构建链表</li>
+<li>如果是链表节点，（如果需要树化，树化，走5），插入至链表头部</li>
+<li>如果是树节点，插入树节点，并且进行平衡</li>
+<li>最后需要resize，进行resize()</li>
+</ol>
+<h3 id="resize"><a href="#resize" class="headerlink" title="resize"></a>resize</h3><p>resize之后大小扩大两倍<br>什么时候会进行resize？进一步观察下来，两种情况下会进行resize。</p>
+<ol>
+<li>某个bin内的元素数量 &gt; TREEIFY_THRESHOLD（8）, 但是总体的Capacity小于MIN_TREEIFY_CAPACITY（64）</li>
+<li>put操作过后，size &gt; (threshold = capacity * loadFactor) 的时候也会。</li>
+</ol>
+<p>resize代码分析：<br>下面这段代码很精妙，巧妙地利用了一个点。<br>假设元素e，oldCapacity，oldPos<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// bucket内链表拆分落在，oldPos以及oldPos + oldCapacity两个新的bucket内</span></span><br><span class="line">e.newPos = e.hash &amp; oldCapacity == <span class="number">1</span> ? oldPos + oldCapacity: oldPos;</span><br><span class="line"><span class="comment">// 下面是jdk代码，将链表做了精妙的拆解，拆成两段</span></span><br><span class="line"><span class="comment">// 两个好处</span></span><br><span class="line"><span class="comment">// 1. 不会倒置旧链表</span></span><br><span class="line"><span class="comment">// 2. 效率更高</span></span><br><span class="line"><span class="keyword">do</span> &#123;</span><br><span class="line">    next = e.next;</span><br><span class="line">    <span class="keyword">if</span> ((e.hash &amp; oldCap) == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (loTail == <span class="keyword">null</span>)</span><br><span class="line">            loHead = e;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            loTail.next = e;</span><br><span class="line">        loTail = e;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (hiTail == <span class="keyword">null</span>)</span><br><span class="line">            hiHead = e;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            hiTail.next = e;</span><br><span class="line">        hiTail = e;</span><br><span class="line">    &#125;</span><br><span class="line">&#125; <span class="keyword">while</span> ((e = next) != <span class="keyword">null</span>);</span><br><span class="line"><span class="keyword">if</span> (loTail != <span class="keyword">null</span>) &#123;</span><br><span class="line">    loTail.next = <span class="keyword">null</span>;</span><br><span class="line">    newTab[j] = loHead;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (hiTail != <span class="keyword">null</span>) &#123;</span><br><span class="line">    hiTail.next = <span class="keyword">null</span>;</span><br><span class="line">    newTab[j + oldCap] = hiHead;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="entrySet-keySet"><a href="#entrySet-keySet" class="headerlink" title="entrySet, keySet"></a>entrySet, keySet</h3><h4 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h4><p>两个都是针对table属性进行foreach循环遍历，但是keySet只能取出key，entrySet能取出Entry。两者都使用了modCount用来保证fail-fast，ConcurrentModificationException。</p>
+<h4 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h4><p>只需要遍历key的话还是推荐使用keySet()，但是不推荐下面这种用法。</p>
+<h1 id="ConcurrentHashMap"><a href="#ConcurrentHashMap" class="headerlink" title="ConcurrentHashMap"></a>ConcurrentHashMap</h1><h2 id="jdk7"><a href="#jdk7" class="headerlink" title="jdk7"></a>jdk7</h2><ol>
+<li>分段锁，内部实现为Segment，继承了ReentrantLock</li>
+<li>默认16段，最大为65536，Segment内部有HashEntry数组，并且采取拉链法处理hash冲突</li>
+<li>扩容的时候针对于Segment内部的HashEntry数组来扩容。</li>
+<li>需要注意的是jdk中有concurrencyLevel（代表Segment数组的大小），在8中已经没什么用处了，只能决定初始容量大小</li>
+</ol>
+<h2 id="静态属性-1"><a href="#静态属性-1" class="headerlink" title="静态属性"></a>静态属性</h2><ol>
+<li>MAXIMUM_CAPACITY，table的最大大小，1&lt;&lt;30</li>
+<li>DEFAULT_CAPACITY，table的大小，16</li>
+<li>MAX_ARRAY_SIZE，元素最大个数，Integer.MAX_VALUE-8</li>
+<li>DEFAULT_CONCURRENCY_LEVEL，向jdk7兼容，16</li>
+<li>LOAD_FACTOR，负载因子，0.75f</li>
+<li>TREEIFY_THRESHOLD，进行树化的元素数量，8</li>
+<li>UNTREEIFY_THRESHOLD，untreeify时bin内元素的最小大小，6</li>
+<li>MIN_TREEIFY_CAPACITY，进行treeify时需要的最要容量要求，64</li>
+<li>MIN_TRANSFER_STRIDE，多线程扩容时候的步长</li>
+<li>RESIZE_STAMP_BITS，</li>
+<li>MAX_RESIZERS，帮助resize的最大线程数</li>
+<li>RESIZE_STAMP_SHIFT，</li>
+<li>MOVED（-1），TREEBIN（-2），RESERVED（-3），hash的常量值，分别代表当前node是ForwardingNode，TreeNode，ReservationNode的hash值。<ul>
+<li>ForwardingNode代表当前bin已经被resize操作过，并且需要当前线程一起帮助resize</li>
+<li>TreeNode代表当前</li>
+<li>Node就是普通的链表节点</li>
+<li>ReservationNode代表当前节点已经被占据（占位符的作用一样），用于后续的mappingFunction操作结束之后再把值塞入进去。</li>
+</ul>
+</li>
+</ol>
+<h2 id="成员属性-1"><a href="#成员属性-1" class="headerlink" title="成员属性"></a>成员属性</h2><ol>
+<li>table，存储元素的数组</li>
+<li>nextTable，也是存储元素的数组，只不过该数组在resizing的时候才会被用到。</li>
+<li>baseCount，容器中存储元素的数量值（基本值）</li>
+<li>sizeCtl，代表当前容器中正在进行的关于容量的操作，-1，代表正在被初始化，≤-1，代表正在被（-sizeCtl-1)个线程扩容，≥0代表0.75*capacity</li>
+<li>transferIndex，代表已经或者正在被扩容处理的节点，未被处理的bin的范围为0~transferIndex - 1</li>
+<li>cellsBusy，代表当前正在初始化某个CounterCell，用于控制多个线程不能同时初始化一个CounterCell</li>
+<li>counterCells，计数器，ConcurrentHashMap的真正size是baseCount+CounterCell数组中的计数。具体看LongAdder分析</li>
+<li>keySet，此三个属性为迭代器视图</li>
+<li>values</li>
+<li>entrySet</li>
+</ol>
+<h2 id="主要方法-1"><a href="#主要方法-1" class="headerlink" title="主要方法"></a>主要方法</h2><h3 id="resize-1"><a href="#resize-1" class="headerlink" title="resize"></a>resize</h3><ol>
+<li>需要判断是否是第一个线程，如果是第一个线程还需要进行新建数组操作</li>
+<li>假设当前容量为64，需要扩容到128，一共三个线程扩容</li>
+<li>假设stride是16，capacity是64，两个线程正在参与扩容操作</li>
+<li>第一个线程处理(48,64]这个范围的元素</li>
+<li>第二个线程处理(32,48]</li>
+<li>谁先处理完手里的元素，就将transferIndex减去stride(32-16),就会继续处理(16,32]这个范围一样</li>
+<li>其他线程进来之后，也会减少transferIndex   </li>
+<li>链表的拆分或者树的拆分都是新建了全新的链表或者是树。</li>
+<li>链表会被倒置。树则不会，会再次平衡 </li>
+</ol>
+<h3 id="putVal"><a href="#putVal" class="headerlink" title="putVal"></a>putVal</h3><ol>
+<li>如果未初始化数组，cas操作sizeCtl为-1，初始化数组</li>
+<li>如果未初始化bin（bucket），cas数组元素初始化</li>
+<li>如果当前bin的首元素是ForwardingNode，帮助进行resize</li>
+<li>在数组已经初始化，当前bin未被扩容的情况下，对当前bin的头结点，加锁，进行链表或者红黑树的插入</li>
+<li>插入完成之后判断是否需要进行树化，或者进行resize</li>
+</ol>
+<p><img src="/images/putVal1.png" width="60%" style="margin-left:0;"><br><img src="/images/putVal2.png" width="60%" style="margin-left:0;"></p>
+<h3 id="get-1"><a href="#get-1" class="headerlink" title="get"></a>get</h3><p><img src="/images/get1.png" width="60%" style="margin-left:0;"><br><img src="/images/get2.png" width="60%" style="margin-left:0;"></p>
+<h1 id="LinkedHashMap"><a href="#LinkedHashMap" class="headerlink" title="LinkedHashMap"></a>LinkedHashMap</h1><p>数据倾斜：由于hash算法设计不合理，或者原本输入传不合理，导致hash结果集中度太高</p>
+<h2 id="成员属性-2"><a href="#成员属性-2" class="headerlink" title="成员属性"></a>成员属性</h2><ol>
+<li><code>LinkedHashMap.Entry&lt;K,V&gt; head</code>，表示链表的头结点</li>
+<li><code>LinkedHashMap.Entry&lt;K,V&gt; tail</code>，表示链表的尾节点</li>
+<li><code>boolean accessOrder</code>，表示当前插入节点时候时候需要维护有序<!-- more -->
+</li>
+</ol>
+<h2 id="主要方法-2"><a href="#主要方法-2" class="headerlink" title="主要方法"></a>主要方法</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 将当前节点加入到链表的最后去</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">linkNodeLast</span><span class="params">(LinkedHashMap.Entry&lt;K,V&gt; p)</span> </span>&#123;</span><br><span class="line">    LinkedHashMap.Entry&lt;K,V&gt; last = tail;</span><br><span class="line">    tail = p;</span><br><span class="line">    <span class="keyword">if</span> (last == <span class="keyword">null</span>)</span><br><span class="line">        head = p;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        p.before = last;</span><br><span class="line">        last.after = p;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 将某个节点替换成另外一个</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">transferLinks</span><span class="params">(LinkedHashMap.Entry&lt;K,V&gt; src,</span></span></span><br><span class="line"><span class="function"><span class="params">                            LinkedHashMap.Entry&lt;K,V&gt; dst)</span> </span>&#123;</span><br><span class="line">    LinkedHashMap.Entry&lt;K,V&gt; b = dst.before = src.before;</span><br><span class="line">    LinkedHashMap.Entry&lt;K,V&gt; a = dst.after = src.after;</span><br><span class="line">    <span class="keyword">if</span> (b == <span class="keyword">null</span>)</span><br><span class="line">        head = dst;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        b.after = dst;</span><br><span class="line">    <span class="keyword">if</span> (a == <span class="keyword">null</span>)</span><br><span class="line">        tail = dst;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        a.before = dst;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 新建节点，可以看出使用的是LinkHashMap.Entry</span></span><br><span class="line"><span class="function">Node&lt;K,V&gt; <span class="title">newNode</span><span class="params">(<span class="keyword">int</span> hash, K key, V value, Node&lt;K,V&gt; e)</span> </span>&#123;</span><br><span class="line">    LinkedHashMap.Entry&lt;K,V&gt; p =</span><br><span class="line">        <span class="keyword">new</span> LinkedHashMap.Entry&lt;K,V&gt;(hash, key, value, e);</span><br><span class="line">    linkNodeLast(p);</span><br><span class="line">    <span class="keyword">return</span> p;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 替换节点</span></span><br><span class="line"><span class="function">Node&lt;K,V&gt; <span class="title">replacementNode</span><span class="params">(Node&lt;K,V&gt; p, Node&lt;K,V&gt; next)</span> </span>&#123;</span><br><span class="line">    LinkedHashMap.Entry&lt;K,V&gt; q = (LinkedHashMap.Entry&lt;K,V&gt;)p;</span><br><span class="line">    LinkedHashMap.Entry&lt;K,V&gt; t =</span><br><span class="line">        <span class="keyword">new</span> LinkedHashMap.Entry&lt;K,V&gt;(q.hash, q.key, q.value, next);</span><br><span class="line">    transferLinks(q, t);</span><br><span class="line">    <span class="keyword">return</span> t;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">TreeNode&lt;K,V&gt; <span class="title">newTreeNode</span><span class="params">(<span class="keyword">int</span> hash, K key, V value, Node&lt;K,V&gt; next)</span> </span>&#123;</span><br><span class="line">    TreeNode&lt;K,V&gt; p = <span class="keyword">new</span> TreeNode&lt;K,V&gt;(hash, key, value, next);</span><br><span class="line">    linkNodeLast(p);</span><br><span class="line">    <span class="keyword">return</span> p;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">TreeNode&lt;K,V&gt; <span class="title">replacementTreeNode</span><span class="params">(Node&lt;K,V&gt; p, Node&lt;K,V&gt; next)</span> </span>&#123;</span><br><span class="line">    LinkedHashMap.Entry&lt;K,V&gt; q = (LinkedHashMap.Entry&lt;K,V&gt;)p;</span><br><span class="line">    TreeNode&lt;K,V&gt; t = <span class="keyword">new</span> TreeNode&lt;K,V&gt;(q.hash, q.key, q.value, next);</span><br><span class="line">    transferLinks(q, t);</span><br><span class="line">    <span class="keyword">return</span> t;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 将节点从链表中删除</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">afterNodeRemoval</span><span class="params">(Node&lt;K,V&gt; e)</span> </span>&#123; <span class="comment">// unlink</span></span><br><span class="line">    LinkedHashMap.Entry&lt;K,V&gt; p =</span><br><span class="line">        (LinkedHashMap.Entry&lt;K,V&gt;)e, b = p.before, a = p.after;</span><br><span class="line">    p.before = p.after = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">if</span> (b == <span class="keyword">null</span>)</span><br><span class="line">        head = a;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        b.after = a;</span><br><span class="line">    <span class="keyword">if</span> (a == <span class="keyword">null</span>)</span><br><span class="line">        tail = b;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        a.before = b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">afterNodeInsertion</span><span class="params">(<span class="keyword">boolean</span> evict)</span> </span>&#123; <span class="comment">// possibly remove eldest</span></span><br><span class="line">    LinkedHashMap.Entry&lt;K,V&gt; first;</span><br><span class="line">    <span class="keyword">if</span> (evict &amp;&amp; (first = head) != <span class="keyword">null</span> &amp;&amp; removeEldestEntry(first)) &#123;</span><br><span class="line">        K key = first.key;</span><br><span class="line">        removeNode(hash(key), key, <span class="keyword">null</span>, <span class="keyword">false</span>, <span class="keyword">true</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 在get方法之后会调用这个，作用是将头结点，放到尾部，第二个节点编程头结点</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">afterNodeAccess</span><span class="params">(Node&lt;K,V&gt; e)</span> </span>&#123; <span class="comment">// move node to last</span></span><br><span class="line">    LinkedHashMap.Entry&lt;K,V&gt; last;</span><br><span class="line">    <span class="keyword">if</span> (accessOrder &amp;&amp; (last = tail) != e) &#123;</span><br><span class="line">        LinkedHashMap.Entry&lt;K,V&gt; p =</span><br><span class="line">            (LinkedHashMap.Entry&lt;K,V&gt;)e, b = p.before, a = p.after;</span><br><span class="line">        p.after = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">if</span> (b == <span class="keyword">null</span>)</span><br><span class="line">            head = a;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            b.after = a;</span><br><span class="line">        <span class="keyword">if</span> (a != <span class="keyword">null</span>)</span><br><span class="line">            a.before = b;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            last = b;</span><br><span class="line">        <span class="keyword">if</span> (last == <span class="keyword">null</span>)</span><br><span class="line">            head = p;</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            p.before = last;</span><br><span class="line">            last.after = p;</span><br><span class="line">        &#125;</span><br><span class="line">        tail = p;</span><br><span class="line">        ++modCount;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/06/25/Map分析/" data-id="cjji8to32000qlbv89pqe4q6x" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/源码/">源码</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/集合/">集合</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/06/26/DTS功能构思/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          DTS功能构思
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/06/24/AQS分析/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">AQS分析</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">32</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/java/jvm/">jvm</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/基础/">基础</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/多线程/">多线程</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/并发/">并发</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/集合/">集合</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/中间件/">中间件</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/分布式/">分布式</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/分布式/微服务/">微服务</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/开源/">开源</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/随笔/">随笔</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/cms/">cms</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/g1/">g1</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gc/">gc</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/io/">io</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a><span class="tag-list-count">29</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jit/">jit</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jmm/">jmm</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rocketmq/">rocketmq</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sharding-jdbc/">sharding-jdbc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tcp/">tcp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/中间件/">中间件</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/关键字/">关键字</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式/">分布式</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/基础/">基础</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多线程/">多线程</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/并发/">并发</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/开源/">开源</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微服务/">微服务</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/攻击/">攻击</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/框架/">框架</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/源码/">源码</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/设计模式/">设计模式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/锁/">锁</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/集合/">集合</a><span class="tag-list-count">5</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/cms/" style="font-size: 11.11px;">cms</a> <a href="/tags/g1/" style="font-size: 11.11px;">g1</a> <a href="/tags/gc/" style="font-size: 11.11px;">gc</a> <a href="/tags/io/" style="font-size: 10px;">io</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/jit/" style="font-size: 10px;">jit</a> <a href="/tags/jmm/" style="font-size: 11.11px;">jmm</a> <a href="/tags/jvm/" style="font-size: 16.67px;">jvm</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/redis/" style="font-size: 11.11px;">redis</a> <a href="/tags/rocketmq/" style="font-size: 10px;">rocketmq</a> <a href="/tags/sharding-jdbc/" style="font-size: 10px;">sharding-jdbc</a> <a href="/tags/tcp/" style="font-size: 10px;">tcp</a> <a href="/tags/中间件/" style="font-size: 17.78px;">中间件</a> <a href="/tags/关键字/" style="font-size: 11.11px;">关键字</a> <a href="/tags/分布式/" style="font-size: 12.22px;">分布式</a> <a href="/tags/基础/" style="font-size: 15.56px;">基础</a> <a href="/tags/多线程/" style="font-size: 14.44px;">多线程</a> <a href="/tags/并发/" style="font-size: 14.44px;">并发</a> <a href="/tags/开源/" style="font-size: 13.33px;">开源</a> <a href="/tags/微服务/" style="font-size: 10px;">微服务</a> <a href="/tags/攻击/" style="font-size: 10px;">攻击</a> <a href="/tags/框架/" style="font-size: 10px;">框架</a> <a href="/tags/源码/" style="font-size: 18.89px;">源码</a> <a href="/tags/网络/" style="font-size: 10px;">网络</a> <a href="/tags/设计模式/" style="font-size: 10px;">设计模式</a> <a href="/tags/锁/" style="font-size: 10px;">锁</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a> <a href="/tags/集合/" style="font-size: 14.44px;">集合</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">42</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/07/12/设计：权限系统/">设计：权限系统</a>
+          </li>
+        
+          <li>
+            <a href="/2018/07/12/设计：秒杀系统/">设计：秒杀系统</a>
+          </li>
+        
+          <li>
+            <a href="/2018/07/12/设计：压测系统/">设计：压测系统</a>
+          </li>
+        
+          <li>
+            <a href="/2018/07/11/DTS技术调研：quartz深入/">DTS技术调研：quartz深入</a>
+          </li>
+        
+          <li>
+            <a href="/2018/07/07/DTS技术调研：抢占式任务调度/">DTS技术调研：抢占式任务调度</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 陈斌<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

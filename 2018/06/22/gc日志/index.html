@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>gc日志 | 陈斌的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="cms参数-XX:+CMSClassUnloadingEnabled -XX:CMSInitiatingOccupancyFraction=80 -XX:CMSMaxAbortablePrecleanTime=5000 -XX:+ExplicitGCInvokesConcurrent -XX:InitialHeapSize=8589934592 -XX:MaxDirectMemorySize=42">
+<meta name="keywords" content="jvm,gc,g1,cms">
+<meta property="og:type" content="article">
+<meta property="og:title" content="gc日志">
+<meta property="og:url" content="http://yoursite.com/2018/06/22/gc日志/index.html">
+<meta property="og:site_name" content="陈斌的博客">
+<meta property="og:description" content="cms参数-XX:+CMSClassUnloadingEnabled -XX:CMSInitiatingOccupancyFraction=80 -XX:CMSMaxAbortablePrecleanTime=5000 -XX:+ExplicitGCInvokesConcurrent -XX:InitialHeapSize=8589934592 -XX:MaxDirectMemorySize=42">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-06-23T09:54:44.013Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="gc日志">
+<meta name="twitter:description" content="cms参数-XX:+CMSClassUnloadingEnabled -XX:CMSInitiatingOccupancyFraction=80 -XX:CMSMaxAbortablePrecleanTime=5000 -XX:+ExplicitGCInvokesConcurrent -XX:InitialHeapSize=8589934592 -XX:MaxDirectMemorySize=42">
+  
+    <link rel="alternate" href="/atom.xml" title="陈斌的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/css/images/favicon.png" type="image/x-icon">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">陈斌的博客</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">技术宅的站点</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+  <!-- <base target="_blank" /> -->
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-gc日志" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/06/22/gc日志/" class="article-date">
+  <time datetime="2018-06-22T11:27:35.000Z" itemprop="datePublished">2018-06-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/java/">java</a>►<a class="article-category-link" href="/categories/java/jvm/">jvm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      gc日志
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          <div id="toc" class="toc-article">
+            <strong class="toc-title">文章目录</strong>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#cms参数"><span class="toc-number">1.</span> <span class="toc-text">cms参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cms日志"><span class="toc-number">2.</span> <span class="toc-text">cms日志</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#g1日志"><span class="toc-number"></span> <span class="toc-text">g1日志</span></a>
+          </div>
+        
+        <h2 id="cms参数"><a href="#cms参数" class="headerlink" title="cms参数"></a>cms参数</h2><p>-XX:+CMSClassUnloadingEnabled -XX:CMSInitiatingOccupancyFraction=80 -XX:CMSMaxAbortablePrecleanTime=5000 -XX:+ExplicitGCInvokesConcurrent -XX:InitialHeapSize=8589934592 -XX:MaxDirectMemorySize=4294967296 -XX:MaxHeapSize=8589934592 -XX:MaxNewSize=6442450944 -XX:NewSize=6442450944 -XX:OldPLABSize=16 -XX:ParallelGCThreads=4 -XX:+PrintGC -XX:+PrintGCDateStamps -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:SurvivorRatio=4 -XX:+UseCMSCompactAtFullCollection -XX:+UseCMSInitiatingOccupancyOnly -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:+UseConcMarkSweepGC -XX:+UseParNewGC<br><a id="more"></a></p>
+<h2 id="cms日志"><a href="#cms日志" class="headerlink" title="cms日志"></a>cms日志</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">// 正常cms log</span><br><span class="line">2018-04-23T02:22:54.609+0800: 225411.844: [GC (CMS Initial Mark) [1 CMS-initial-mark: 1815727K(2097152K)] 2426460K(7340032K), 0.1136457 secs] [Times: user=0.38 sys=0.01, real=0.11 secs]</span><br><span class="line">2018-04-23T02:22:54.723+0800: 225411.958: [CMS-concurrent-mark-start]</span><br><span class="line">2018-04-23T02:22:55.236+0800: 225412.470: [CMS-concurrent-mark: 0.495/0.512 secs] [Times: user=1.70 sys=0.06, real=0.52 secs]</span><br><span class="line">2018-04-23T02:22:55.236+0800: 225412.470: [CMS-concurrent-preclean-start]</span><br><span class="line">2018-04-23T02:22:55.246+0800: 225412.480: [CMS-concurrent-preclean: 0.008/0.009 secs] [Times: user=0.03 sys=0.00, real=0.01 secs]</span><br><span class="line">2018-04-23T02:22:55.246+0800: 225412.480: [CMS-concurrent-abortable-preclean-start]</span><br><span class="line">2018-04-23T02:22:55.246+0800: 225412.480: [CMS-concurrent-abortable-preclean: 0.000/0.000 secs] [Times: user=0.00 sys=0.00, real=0.00 secs]</span><br><span class="line">2018-04-23T02:22:55.248+0800: 225412.483: [GC (CMS Final Remark) [YG occupancy: 923389 K (5242880 K)]2018-04-23T02:22:55.248+0800: 225412.483: [Rescan (parallel) , 0.1816314 secs]2018-04-23T02:22:55.430+0800: 225412.664: [weak refs processing, 0.0096429 secs]2018-04-23T02:22:55.440+0800: 225412.674: [class unloading, 0.1149430 secs]2018-04-23T02:22:55.555+0800: 225412.789: [scrub symbol table, 0.0100393 secs]2018-04-23T02:22:55.565+0800: 225412.799: [scrub string table, 0.0025445 secs][1 CMS-remark: 1815727K(2097152K)] 2739116K(7340032K), 0.3459856 secs] [Times: user=0.87 sys=0.01, real=0.34 secs]</span><br><span class="line">2018-04-23T02:22:55.611+0800: 225412.845: [CMS-concurrent-sweep-start]</span><br><span class="line">2018-04-23T02:22:56.039+0800: 225413.274: [CMS-concurrent-sweep: 0.374/0.429 secs] [Times: user=1.50 sys=0.04, real=0.43 secs]</span><br><span class="line">2018-04-23T02:22:56.040+0800: 225413.274: [CMS-concurrent-reset-start]</span><br><span class="line">2018-04-23T02:22:56.045+0800: 225413.279: [CMS-concurrent-reset: 0.005/0.005 secs] [Times: user=0.02 sys=0.00, real=0.00 secs]</span><br></pre></td></tr></table></figure>
+<h1 id="g1日志"><a href="#g1日志" class="headerlink" title="g1日志"></a>g1日志</h1><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br></pre></td><td class="code"><pre><span class="line">2018-05-19T14:54:29.930+0800: 181748.799: [GC pause (G1 Evacuation Pause) (young), 0.2280865 secs]</span><br><span class="line">   [Parallel Time: <span class="number">206.5</span> ms, GC Workers: <span class="number">4</span>]</span><br><span class="line">      [GC Worker Start (ms): Min: <span class="number">181748799.6</span>, Avg: <span class="number">181748799.8</span>, Max: <span class="number">181748800.2</span>, Diff: <span class="number">0.6</span>]</span><br><span class="line">      [Ext Root Scanning (ms): Min: <span class="number">4.7</span>, Avg: <span class="number">6.4</span>, Max: <span class="number">10.4</span>, Diff: <span class="number">5.7</span>, Sum: <span class="number">25.7</span>]</span><br><span class="line">      [Update RS (ms): Min: <span class="number">92.5</span>, Avg: <span class="number">95.9</span>, Max: <span class="number">97.4</span>, Diff: <span class="number">4.8</span>, Sum: <span class="number">383.6</span>]</span><br><span class="line">         [Processed Buffers: Min: <span class="number">483</span>, Avg: <span class="number">922.8</span>, Max: <span class="number">1157</span>, Diff: <span class="number">674</span>, Sum: <span class="number">3691</span>]</span><br><span class="line">      [Scan RS (ms): Min: <span class="number">0.8</span>, Avg: <span class="number">0.8</span>, Max: <span class="number">0.8</span>, Diff: <span class="number">0.1</span>, Sum: <span class="number">3.2</span>]</span><br><span class="line">      [Code Root Scanning (ms): Min: <span class="number">0.4</span>, Avg: <span class="number">0.4</span>, Max: <span class="number">0.4</span>, Diff: <span class="number">0.0</span>, Sum: <span class="number">1.6</span>]</span><br><span class="line">      [Object Copy (ms): Min: <span class="number">99.5</span>, Avg: <span class="number">100.2</span>, Max: <span class="number">101.3</span>, Diff: <span class="number">1.8</span>, Sum: <span class="number">401.0</span>]</span><br><span class="line">      [Termination (ms): Min: <span class="number">0.0</span>, Avg: <span class="number">1.6</span>, Max: <span class="number">2.7</span>, Diff: <span class="number">2.7</span>, Sum: <span class="number">6.4</span>]</span><br><span class="line">         [Termination Attempts: Min: <span class="number">1</span>, Avg: <span class="number">1.0</span>, Max: <span class="number">1</span>, Diff: <span class="number">0</span>, Sum: <span class="number">4</span>]</span><br><span class="line">      [GC Worker Other (ms): Min: <span class="number">0.0</span>, Avg: <span class="number">0.0</span>, Max: <span class="number">0.0</span>, Diff: <span class="number">0.0</span>, Sum: <span class="number">0.1</span>]</span><br><span class="line">      [GC Worker Total (ms): Min: <span class="number">204.5</span>, Avg: <span class="number">205.4</span>, Max: <span class="number">206.3</span>, Diff: <span class="number">1.9</span>, Sum: <span class="number">821.8</span>]</span><br><span class="line">      [GC Worker End (ms): Min: <span class="number">181749004.7</span>, Avg: <span class="number">181749005.3</span>, Max: <span class="number">181749006.0</span>, Diff: <span class="number">1.3</span>]</span><br><span class="line">   [Code Root Fixup: <span class="number">0.5</span> ms]</span><br><span class="line">   [Code Root Purge: <span class="number">0.0</span> ms]</span><br><span class="line">   [Clear CT: <span class="number">0.8</span> ms]</span><br><span class="line">   [Other: <span class="number">20.3</span> ms]</span><br><span class="line">      [Choose CSet: <span class="number">0.0</span> ms]</span><br><span class="line">      [Ref Proc: <span class="number">16.6</span> ms]</span><br><span class="line">      [Ref Enq: <span class="number">0.2</span> ms]</span><br><span class="line">      [Redirty Cards: <span class="number">0.2</span> ms]</span><br><span class="line">      [Humongous Register: <span class="number">0.2</span> ms]</span><br><span class="line">      [Humongous Reclaim: <span class="number">0.6</span> ms]</span><br><span class="line">      [Free CSet: <span class="number">1.7</span> ms]</span><br><span class="line">   [Eden: <span class="number">4836.0</span>M(<span class="number">4836.0</span>M)-&gt;<span class="number">0.0</span>B(<span class="number">4768.0</span>M) Survivors: <span class="number">76.0</span>M-&gt;<span class="number">144.0</span>M Heap: <span class="number">5973.0</span>M(<span class="number">8192.0</span>M)-&gt;<span class="number">768.7</span>M(<span class="number">8192.0</span>M)]</span><br><span class="line"> [Times: user=<span class="number">0.69</span> sys=<span class="number">0.01</span>, real=<span class="number">0.23</span> secs]</span><br><span class="line">2018-05-19T14:54:57.248+0800: 181776.117: [GC pause (G1 Evacuation Pause) (young), 0.1199877 secs]</span><br><span class="line">   [Parallel Time: <span class="number">104.5</span> ms, GC Workers: <span class="number">4</span>]</span><br><span class="line">      [GC Worker Start (ms): Min: <span class="number">181776117.1</span>, Avg: <span class="number">181776117.1</span>, Max: <span class="number">181776117.2</span>, Diff: <span class="number">0.1</span>]</span><br><span class="line">      [Ext Root Scanning (ms): Min: <span class="number">2.9</span>, Avg: <span class="number">3.1</span>, Max: <span class="number">3.2</span>, Diff: <span class="number">0.3</span>, Sum: <span class="number">12.3</span>]</span><br><span class="line">      [Update RS (ms): Min: <span class="number">42.2</span>, Avg: <span class="number">42.3</span>, Max: <span class="number">42.3</span>, Diff: <span class="number">0.1</span>, Sum: <span class="number">169.1</span>]</span><br><span class="line">         [Processed Buffers: Min: <span class="number">482</span>, Avg: <span class="number">493.2</span>, Max: <span class="number">506</span>, Diff: <span class="number">24</span>, Sum: <span class="number">1973</span>]</span><br><span class="line">      [Scan RS (ms): Min: <span class="number">0.7</span>, Avg: <span class="number">0.8</span>, Max: <span class="number">0.9</span>, Diff: <span class="number">0.2</span>, Sum: <span class="number">3.3</span>]</span><br><span class="line">      [Code Root Scanning (ms): Min: <span class="number">0.4</span>, Avg: <span class="number">0.4</span>, Max: <span class="number">0.4</span>, Diff: <span class="number">0.1</span>, Sum: <span class="number">1.6</span>]</span><br><span class="line">      [Object Copy (ms): Min: <span class="number">57.5</span>, Avg: <span class="number">57.7</span>, Max: <span class="number">57.8</span>, Diff: <span class="number">0.3</span>, Sum: <span class="number">230.6</span>]</span><br><span class="line">      [Termination (ms): Min: <span class="number">0.0</span>, Avg: <span class="number">0.0</span>, Max: <span class="number">0.0</span>, Diff: <span class="number">0.0</span>, Sum: <span class="number">0.0</span>]</span><br><span class="line">         [Termination Attempts: Min: <span class="number">1</span>, Avg: <span class="number">1.0</span>, Max: <span class="number">1</span>, Diff: <span class="number">0</span>, Sum: <span class="number">4</span>]</span><br><span class="line">      [GC Worker Other (ms): Min: <span class="number">0.1</span>, Avg: <span class="number">0.1</span>, Max: <span class="number">0.1</span>, Diff: <span class="number">0.1</span>, Sum: <span class="number">0.4</span>]</span><br><span class="line">      [GC Worker Total (ms): Min: <span class="number">104.3</span>, Avg: <span class="number">104.4</span>, Max: <span class="number">104.4</span>, Diff: <span class="number">0.1</span>, Sum: <span class="number">417.4</span>]</span><br><span class="line">      [GC Worker End (ms): Min: <span class="number">181776221.5</span>, Avg: <span class="number">181776221.5</span>, Max: <span class="number">181776221.5</span>, Diff: <span class="number">0.1</span>]</span><br><span class="line">   [Code Root Fixup: <span class="number">0.5</span> ms]</span><br><span class="line">   [Code Root Purge: <span class="number">0.0</span> ms]</span><br><span class="line">   [Clear CT: <span class="number">0.6</span> ms]</span><br><span class="line">   [Other: <span class="number">14.3</span> ms]</span><br><span class="line">      [Choose CSet: <span class="number">0.0</span> ms]</span><br><span class="line">      [Ref Proc: <span class="number">11.1</span> ms]</span><br><span class="line">      [Ref Enq: <span class="number">0.1</span> ms]</span><br><span class="line">      [Redirty Cards: <span class="number">0.1</span> ms]</span><br><span class="line">      [Humongous Register: <span class="number">0.2</span> ms]</span><br><span class="line">      [Humongous Reclaim: <span class="number">0.3</span> ms]</span><br><span class="line">      [Free CSet: <span class="number">1.7</span> ms]</span><br><span class="line">   [Eden: <span class="number">4768.0</span>M(<span class="number">4768.0</span>M)-&gt;<span class="number">0.0</span>B(<span class="number">4820.0</span>M) Survivors: <span class="number">144.0</span>M-&gt;<span class="number">92.0</span>M Heap: <span class="number">5758.2</span>M(<span class="number">8192.0</span>M)-&gt;<span class="number">718.8</span>M(<span class="number">8192.0</span>M)]</span><br><span class="line"> [Times: user=<span class="number">0.42</span> sys=<span class="number">0.00</span>, real=<span class="number">0.12</span> secs]</span><br><span class="line">2018-05-19T14:55:13.434+0800: 181792.302: [GC pause (G1 Evacuation Pause) (young), 0.0821037 secs]</span><br><span class="line">   [Parallel Time: <span class="number">69.0</span> ms, GC Workers: <span class="number">4</span>]</span><br><span class="line">      [GC Worker Start (ms): Min: <span class="number">181792302.8</span>, Avg: <span class="number">181792302.8</span>, Max: <span class="number">181792302.9</span>, Diff: <span class="number">0.1</span>]</span><br><span class="line">      [Ext Root Scanning (ms): Min: <span class="number">5.7</span>, Avg: <span class="number">6.1</span>, Max: <span class="number">6.5</span>, Diff: <span class="number">0.7</span>, Sum: <span class="number">24.6</span>]</span><br><span class="line">      [Update RS (ms): Min: <span class="number">26.6</span>, Avg: <span class="number">26.7</span>, Max: <span class="number">26.7</span>, Diff: <span class="number">0.1</span>, Sum: <span class="number">106.7</span>]</span><br><span class="line">         [Processed Buffers: Min: <span class="number">310</span>, Avg: <span class="number">326.2</span>, Max: <span class="number">343</span>, Diff: <span class="number">33</span>, Sum: <span class="number">1305</span>]</span><br><span class="line">      [Scan RS (ms): Min: <span class="number">0.8</span>, Avg: <span class="number">0.8</span>, Max: <span class="number">0.8</span>, Diff: <span class="number">0.1</span>, Sum: <span class="number">3.1</span>]</span><br><span class="line">      [Code Root Scanning (ms): Min: <span class="number">0.4</span>, Avg: <span class="number">0.4</span>, Max: <span class="number">0.4</span>, Diff: <span class="number">0.1</span>, Sum: <span class="number">1.7</span>]</span><br><span class="line">      [Object Copy (ms): Min: <span class="number">34.4</span>, Avg: <span class="number">34.7</span>, Max: <span class="number">35.0</span>, Diff: <span class="number">0.6</span>, Sum: <span class="number">138.7</span>]</span><br><span class="line">      [Termination (ms): Min: <span class="number">0.0</span>, Avg: <span class="number">0.0</span>, Max: <span class="number">0.0</span>, Diff: <span class="number">0.0</span>, Sum: <span class="number">0.0</span>]</span><br><span class="line">         [Termination Attempts: Min: <span class="number">1</span>, Avg: <span class="number">1.0</span>, Max: <span class="number">1</span>, Diff: <span class="number">0</span>, Sum: <span class="number">4</span>]</span><br><span class="line">      [GC Worker Other (ms): Min: <span class="number">0.1</span>, Avg: <span class="number">0.1</span>, Max: <span class="number">0.1</span>, Diff: <span class="number">0.1</span>, Sum: <span class="number">0.4</span>]</span><br><span class="line">      [GC Worker Total (ms): Min: <span class="number">68.8</span>, Avg: <span class="number">68.8</span>, Max: <span class="number">68.8</span>, Diff: <span class="number">0.0</span>, Sum: <span class="number">275.1</span>]</span><br><span class="line">      [GC Worker End (ms): Min: <span class="number">181792371.6</span>, Avg: <span class="number">181792371.6</span>, Max: <span class="number">181792371.6</span>, Diff: <span class="number">0.1</span>]</span><br><span class="line">   [Code Root Fixup: <span class="number">0.5</span> ms]</span><br><span class="line">   [Code Root Purge: <span class="number">0.0</span> ms]</span><br><span class="line">   [Clear CT: <span class="number">0.6</span> ms]</span><br><span class="line">   [Other: <span class="number">12.0</span> ms]</span><br><span class="line">      [Choose CSet: <span class="number">0.0</span> ms]</span><br><span class="line">      [Ref Proc: <span class="number">9.0</span> ms]</span><br><span class="line">      [Ref Enq: <span class="number">0.0</span> ms]</span><br><span class="line">      [Redirty Cards: <span class="number">0.2</span> ms]</span><br><span class="line">      [Humongous Register: <span class="number">0.2</span> ms]</span><br><span class="line">      [Humongous Reclaim: <span class="number">0.2</span> ms]</span><br><span class="line">      [Free CSet: <span class="number">1.6</span> ms]</span><br><span class="line">   [Eden: <span class="number">4820.0</span>M(<span class="number">4820.0</span>M)-&gt;<span class="number">0.0</span>B(<span class="number">4852.0</span>M) Survivors: <span class="number">92.0</span>M-&gt;<span class="number">60.0</span>M Heap: <span class="number">5678.8</span>M(<span class="number">8192.0</span>M)-&gt;<span class="number">686.9</span>M(<span class="number">8192.0</span>M)]</span><br><span class="line"> [Times: user=<span class="number">0.28</span> sys=<span class="number">0.01</span>, real=<span class="number">0.08</span> secs]</span><br><span class="line">2018-05-19T14:55:42.260+0800: 181821.129: [GC pause (G1 Evacuation Pause) (young), 0.1619036 secs]</span><br><span class="line">   [Parallel Time: <span class="number">141.3</span> ms, GC Workers: <span class="number">4</span>]</span><br><span class="line">      [GC Worker Start (ms): Min: <span class="number">181821129.4</span>, Avg: <span class="number">181821129.5</span>, Max: <span class="number">181821129.5</span>, Diff: <span class="number">0.1</span>]</span><br><span class="line">      [Ext Root Scanning (ms): Min: <span class="number">2.9</span>, Avg: <span class="number">3.1</span>, Max: <span class="number">3.3</span>, Diff: <span class="number">0.4</span>, Sum: <span class="number">12.6</span>]</span><br><span class="line">      [Update RS (ms): Min: <span class="number">41.9</span>, Avg: <span class="number">41.9</span>, Max: <span class="number">42.0</span>, Diff: <span class="number">0.1</span>, Sum: <span class="number">167.8</span>]</span><br><span class="line">         [Processed Buffers: Min: <span class="number">469</span>, Avg: <span class="number">506.0</span>, Max: <span class="number">533</span>, Diff: <span class="number">64</span>, Sum: <span class="number">2024</span>]</span><br><span class="line">      [Scan RS (ms): Min: <span class="number">0.7</span>, Avg: <span class="number">0.8</span>, Max: <span class="number">0.8</span>, Diff: <span class="number">0.1</span>, Sum: <span class="number">3.2</span>]</span><br><span class="line">      [Code Root Scanning (ms): Min: <span class="number">0.4</span>, Avg: <span class="number">0.4</span>, Max: <span class="number">0.4</span>, Diff: <span class="number">0.0</span>, Sum: <span class="number">1.6</span>]</span><br><span class="line">      [Object Copy (ms): Min: <span class="number">94.5</span>, Avg: <span class="number">94.7</span>, Max: <span class="number">94.8</span>, Diff: <span class="number">0.3</span>, Sum: <span class="number">378.6</span>]</span><br><span class="line">      [Termination (ms): Min: <span class="number">0.0</span>, Avg: <span class="number">0.0</span>, Max: <span class="number">0.0</span>, Diff: <span class="number">0.0</span>, Sum: <span class="number">0.0</span>]</span><br><span class="line">         [Termination Attempts: Min: <span class="number">1</span>, Avg: <span class="number">1.0</span>, Max: <span class="number">1</span>, Diff: <span class="number">0</span>, Sum: <span class="number">4</span>]</span><br><span class="line">      [GC Worker Other (ms): Min: <span class="number">0.0</span>, Avg: <span class="number">0.1</span>, Max: <span class="number">0.1</span>, Diff: <span class="number">0.1</span>, Sum: <span class="number">0.3</span>]</span><br><span class="line">      [GC Worker Total (ms): Min: <span class="number">141.0</span>, Avg: <span class="number">141.0</span>, Max: <span class="number">141.1</span>, Diff: <span class="number">0.1</span>, Sum: <span class="number">564.1</span>]</span><br><span class="line">      [GC Worker End (ms): Min: <span class="number">181821270.4</span>, Avg: <span class="number">181821270.5</span>, Max: <span class="number">181821270.5</span>, Diff: <span class="number">0.1</span>]</span><br><span class="line">   [Code Root Fixup: <span class="number">0.5</span> ms]</span><br><span class="line">   [Code Root Purge: <span class="number">0.0</span> ms]</span><br><span class="line">   [Clear CT: <span class="number">0.7</span> ms]</span><br><span class="line">   [Other: <span class="number">19.4</span> ms]</span><br><span class="line">      [Choose CSet: <span class="number">0.0</span> ms]</span><br><span class="line">      [Ref Proc: <span class="number">16.2</span> ms]</span><br><span class="line">      [Ref Enq: <span class="number">0.2</span> ms]</span><br><span class="line">      [Redirty Cards: <span class="number">0.1</span> ms]</span><br><span class="line">      [Humongous Register: <span class="number">0.2</span> ms]</span><br><span class="line">      [Humongous Reclaim: <span class="number">0.3</span> ms]</span><br><span class="line">      [Free CSet: <span class="number">1.6</span> ms]</span><br><span class="line">   [Eden: <span class="number">4852.0</span>M(<span class="number">4852.0</span>M)-&gt;<span class="number">0.0</span>B(<span class="number">4756.0</span>M) Survivors: <span class="number">60.0</span>M-&gt;<span class="number">156.0</span>M Heap: <span class="number">5766.5</span>M(<span class="number">8192.0</span>M)-&gt;<span class="number">786.9</span>M(<span class="number">8192.0</span>M)]</span><br><span class="line"> [Times: user=<span class="number">0.57</span> sys=<span class="number">0.01</span>, real=<span class="number">0.16</span> secs]</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/06/22/gc日志/" data-id="cjji8to3n001zlbv86defvdru" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cms/">cms</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/g1/">g1</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/gc/">gc</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jvm/">jvm</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/06/22/hello-world/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          hello world
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><span class="category-list-count">32</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/java/jvm/">jvm</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/基础/">基础</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/多线程/">多线程</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/并发/">并发</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/集合/">集合</a><span class="category-list-count">5</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/中间件/">中间件</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/分布式/">分布式</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/分布式/微服务/">微服务</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/开源/">开源</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/随笔/">随笔</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/cms/">cms</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/g1/">g1</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gc/">gc</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/io/">io</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a><span class="tag-list-count">29</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jit/">jit</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jmm/">jmm</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/">redis</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rocketmq/">rocketmq</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sharding-jdbc/">sharding-jdbc</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tcp/">tcp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/中间件/">中间件</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/关键字/">关键字</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式/">分布式</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/基础/">基础</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多线程/">多线程</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/并发/">并发</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/开源/">开源</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微服务/">微服务</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/攻击/">攻击</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/框架/">框架</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/源码/">源码</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/设计模式/">设计模式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/锁/">锁</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/集合/">集合</a><span class="tag-list-count">5</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/cms/" style="font-size: 11.11px;">cms</a> <a href="/tags/g1/" style="font-size: 11.11px;">g1</a> <a href="/tags/gc/" style="font-size: 11.11px;">gc</a> <a href="/tags/io/" style="font-size: 10px;">io</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/jit/" style="font-size: 10px;">jit</a> <a href="/tags/jmm/" style="font-size: 11.11px;">jmm</a> <a href="/tags/jvm/" style="font-size: 16.67px;">jvm</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/redis/" style="font-size: 11.11px;">redis</a> <a href="/tags/rocketmq/" style="font-size: 10px;">rocketmq</a> <a href="/tags/sharding-jdbc/" style="font-size: 10px;">sharding-jdbc</a> <a href="/tags/tcp/" style="font-size: 10px;">tcp</a> <a href="/tags/中间件/" style="font-size: 17.78px;">中间件</a> <a href="/tags/关键字/" style="font-size: 11.11px;">关键字</a> <a href="/tags/分布式/" style="font-size: 12.22px;">分布式</a> <a href="/tags/基础/" style="font-size: 15.56px;">基础</a> <a href="/tags/多线程/" style="font-size: 14.44px;">多线程</a> <a href="/tags/并发/" style="font-size: 14.44px;">并发</a> <a href="/tags/开源/" style="font-size: 13.33px;">开源</a> <a href="/tags/微服务/" style="font-size: 10px;">微服务</a> <a href="/tags/攻击/" style="font-size: 10px;">攻击</a> <a href="/tags/框架/" style="font-size: 10px;">框架</a> <a href="/tags/源码/" style="font-size: 18.89px;">源码</a> <a href="/tags/网络/" style="font-size: 10px;">网络</a> <a href="/tags/设计模式/" style="font-size: 10px;">设计模式</a> <a href="/tags/锁/" style="font-size: 10px;">锁</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a> <a href="/tags/集合/" style="font-size: 14.44px;">集合</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">42</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/07/12/设计：权限系统/">设计：权限系统</a>
+          </li>
+        
+          <li>
+            <a href="/2018/07/12/设计：秒杀系统/">设计：秒杀系统</a>
+          </li>
+        
+          <li>
+            <a href="/2018/07/12/设计：压测系统/">设计：压测系统</a>
+          </li>
+        
+          <li>
+            <a href="/2018/07/11/DTS技术调研：quartz深入/">DTS技术调研：quartz深入</a>
+          </li>
+        
+          <li>
+            <a href="/2018/07/07/DTS技术调研：抢占式任务调度/">DTS技术调研：抢占式任务调度</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 陈斌<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
